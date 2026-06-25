@@ -1,4 +1,4 @@
-# ProxyPool — 代理采集与订阅框架
+# Proxy — 代理采集与订阅框架
 
 免费代理池。自动采集多个国内可达的免费代理源，异步并发探活检测（CN/外网双标签），提供 Clash 订阅和 JSON API。SOCKS4 自动桥接为 SOCKS5，HTTP 代理需通过 CONNECT 隧道验证
 
