@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+# 数据库
+*.db
+*.sqlite
+*.sqlite3
+
+# 日志
+*.log
+
+# 本地配置（防止你的真实 token 意外上传）
+config.local.yaml
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# 临时文件
+/tmp/
+/proxypool.db
