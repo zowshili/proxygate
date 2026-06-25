@@ -1,0 +1,10 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+aiohttp>=3.9
+aiohttp-socks>=0.8
+APScheduler>=3.10
+beautifulsoup4>=4.12
+lxml>=5.1
+PyYAML>=6.0
+# 如需绕过 zdaye 的 TLS 指纹 WAF，取消下面注释并改用 curl_cffi 抓取
+# curl_cffi>=0.7
