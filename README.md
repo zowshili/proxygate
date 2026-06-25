@@ -50,7 +50,7 @@
 ### 环境要求
 
 - Python 3.10+
-- Linux / macOS（Windows 需 WSL）
+- Linux / macOS / Windows
 
 ### 安装
 
