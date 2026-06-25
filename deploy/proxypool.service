@@ -5,9 +5,9 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-# 项目目录与 venv（按实际路径修改）
-WorkingDirectory=%h/桌面/工作目录/proxypool
-ExecStart=%h/桌面/工作目录/proxypool/.venv/bin/python main.py
+# 项目目录与 venv（按实际路径修改，%h = 用户 home 目录）
+WorkingDirectory=%h/proxypool
+ExecStart=%h/proxypool/.venv/bin/python main.py
 # 崩溃后 10 秒自动重启
 Restart=on-failure
 RestartSec=10
