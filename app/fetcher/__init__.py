@@ -6,6 +6,7 @@ import logging
 from typing import List
 
 import aiohttp
+from aiohttp.resolver import AsyncResolver
 
 from ..config import FetchConfig
 from ..models import Proxy
@@ -46,7 +47,8 @@ async def run_fetch_all(fetch_cfg: FetchConfig, allowed_protocols: List[str]) ->
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
     }
-    conn = aiohttp.TCPConnector(limit=20, ssl=False)
+    resolver = AsyncResolver(timeout=2.0)
+    conn = aiohttp.TCPConnector(limit=20, ssl=False, resolver=resolver)
     async with aiohttp.ClientSession(connector=conn, headers=headers) as session:
         tasks: List[asyncio.Task] = []
         for src in fetch_cfg.sources:

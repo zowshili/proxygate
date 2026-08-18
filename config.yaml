@@ -2,19 +2,19 @@
 # ============================================================
 # 部署前必改：
 #   1. web.token            改为强随机字符串
-#   2. web.host             部署到服务端 改 0.0.0.0
-#   3. clash.gateway_host   改 服务端的局域网 IP（socks4 网关节点用）
+#   2. web.host             部署到 NAS 改 0.0.0.0
+#   3. clash.gateway_host   改 NAS 的局域网 IP（socks4 网关节点用）
 # ============================================================
 
 web:
-  host: 0.0.0.0           # 部署到服务端 改 0.0.0.0（局域网可访问）；仅本机用 127.0.0.1
+  host: 0.0.0.0           # 部署到 NAS 改 0.0.0.0（局域网可访问）；仅本机用 127.0.0.1
   port: 8080
-  token: "change-me-to-a-secret-token"   # 部署前务必改为强随机串
+  token: "YOUR_SECURE_TOKEN_HERE"   # 部署前务必改为强随机串
 
 clash:
   # socks4→socks5 网关注册到 Clash 订阅时用的地址。
-  # Clash 与脚本同机器用 127.0.0.1；Clash 在其他设备（局域网）用 服务端的局域网 IP。
-  gateway_host: "127.0.0.1"
+  # Clash 与脚本同机器用 127.0.0.1；Clash 在其他设备（局域网）用 NAS 的局域网 IP。
+  gateway_host: "YOUR_NAS_LAN_IP_HERE"
 
 fetch:
   interval_seconds: 900   # 采集间隔（15 分钟）
@@ -108,8 +108,8 @@ fetch:
 check:
   new_interval: 300        # 保活/新代理探活间隔（5 分钟）
   full_interval: 1800      # 全量探活间隔（30 分钟）
-  concurrency: 300         # 异步并发上限
-  timeout: 8               # 单代理单次请求超时（秒）
+  concurrency: 500         # 异步并发上限
+  timeout: 4               # 单代理单次请求超时（秒）
   fail_threshold: 10       # 连续失败次数达到后删除
   alive_fail_to_dead: 5    # 连续失败次数达到后置 alive=0
   # 探活目标统一用 http（存活率更高，避免 https 目标 TLS 校验误杀）
@@ -123,7 +123,7 @@ check:
 
 gateway:
   # socks4→socks5 网关：对存活的 socks4 代理在本地开 SOCKS5 端口转发
-  listen_host: "0.0.0.0"   # 监听地址（Clash 连用 0.0.0.0；仅本机 127.0.0.1）
+  listen_host: "0.0.0.0"   # 监听地址（局域网 Clash 连用 0.0.0.0；仅本机 127.0.0.1）
   port_start: 30000        # 网关端口范围起
   port_end: 31999          # 网关端口范围止
   # 注意：listen_host=0.0.0.0 意味着局域网内任何人都可连你的桥接端口（无认证）

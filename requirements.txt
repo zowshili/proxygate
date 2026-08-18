@@ -1,6 +1,7 @@
 fastapi>=0.110
 uvicorn[standard]>=0.27
 aiohttp>=3.9
+aiodns>=3.0
 aiohttp-socks>=0.8
 APScheduler>=3.10
 beautifulsoup4>=4.12

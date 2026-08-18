@@ -14,6 +14,7 @@ import time
 from typing import List
 
 import aiohttp
+from aiohttp.resolver import AsyncResolver
 from aiohttp_socks import ProxyConnector
 
 from .config import CheckConfig
@@ -122,7 +123,8 @@ async def run_check_batch(
 
     sem = asyncio.Semaphore(cfg.concurrency)
     headers = {"User-Agent": "Mozilla/5.0 proxypool-checker"}
-    conn = aiohttp.TCPConnector(limit=cfg.concurrency, ssl=False, force_close=True)
+    resolver = AsyncResolver(timeout=2.0)
+    conn = aiohttp.TCPConnector(limit=cfg.concurrency, ssl=False, force_close=True, resolver=resolver)
     progress = {"done": 0, "alive": 0}
 
     async with aiohttp.ClientSession(connector=conn, headers=headers) as base_session:

@@ -1,11 +1,11 @@
-# ProxyPool 部署指南（Debian 服务端）
+# ProxyPool 部署指南（Debian NAS）
 
 ## 架构
 
 ```
-[服务器]                          [你的设备 Clash Verge]
+[Debian NAS]                          [你的设备 Clash Verge]
 proxypool 服务 (systemd 常驻)          订阅 URL:
-  - 采集器: 15±1 分拉 8 个代理源        http://<服务端_IP>:8080
+  - 采集器: 15±1 分拉 8 个代理源        http://<NAS_IP>:8080
   - 探活器: 5 分保活/30 分全量           /sub/clash?token=<TOKEN>
   - 网关: socks4→socks5 桥接端口        ↓ 每 1 小时自动刷新
   - Web: 8080 提供订阅                  拿到最新存活节点(按协议×延迟分档)
@@ -14,17 +14,17 @@ proxypool 服务 (systemd 常驻)          订阅 URL:
 ## 一、首次部署
 
 ### 0. 前提
-你已经在当前开发机上跑通了整个项目，现在把项目复制到 服务端 上。
+你已经在当前开发机上跑通了整个项目，现在把项目复制到 NAS 上。
 
-如果项目直接就在 服务端 上（比如在 服务端 上编辑的），跳到第 1.5 步装依赖。
+如果项目直接就在 NAS 上（比如在 NAS 上编辑的），跳到第 1.5 步装依赖。
 
-### 1. 复制项目到 服务端（从开发机到 服务端）
+### 1. 复制项目到 NAS（从开发机到 NAS）
 ```bash
-# 在 开发机 上执行，把项目 scp 到 服务端
-scp -r /home/zowshili/桌面/工作目录/proxypool user@服务端_ip:~/proxypool/
+# 在 开发机 上执行，把项目 scp 到 NAS
+scp -r /path/to/proxypool user@nas_ip:~/proxypool/
 ```
 
-### 1.5 创建虚拟环境并装依赖（在 服务端 上执行）
+### 1.5 创建虚拟环境并装依赖（在 NAS 上执行）
 ```bash
 cd ~/proxypool
 python3 -m venv .venv
@@ -48,7 +48,7 @@ web:
   token: "Fx3h7gJk9mNq2pR5sT8vWxYz4aB6cDe"   # ← 换成你刚生成的 token
 
 clash:
-  gateway_host: "192.168.1.100"          # ← 改成 服务端 的局域网 IP
+  gateway_host: "192.168.1.100"          # ← 改成 NAS 的局域网 IP
 ```
 
 ### 3. 安装 systemd 服务
@@ -97,7 +97,7 @@ sudo ufw allow from 192.168.1.200 to any port 30000:31999 proto tcp
 ### 6. 验证服务
 
 ```bash
-# 健康检查（在 服务端 上执行）
+# 健康检查（在 NAS 上执行）
 curl http://127.0.0.1:8080/healthz
 # 期望: {"ok":true}
 
@@ -120,7 +120,7 @@ curl "http://127.0.0.1:8080/api/gateway/status?token=你的token"
 URL: http://192.168.1.100:8080/sub/clash?token=你的token
 ```
 
-> 把 `192.168.1.100` 换成 服务端 的实际局域网 IP。
+> 把 `192.168.1.100` 换成 NAS 的实际局域网 IP。
 
 ### 2. 设置自动刷新（非常重要）
 
@@ -182,7 +182,7 @@ SOCKS4-All      (经网关桥接的 SOCKS4 代理)
 - **HTTP 代理**：探活时用 CONNECT 隧道验证，必须能通 `https://www.baidu.com` 才算存活。免费站基本不支持，所以目前为骨架空组
 - **HTTPS 代理**：66daili 标的"HTTPS"实际是 HTTP CONNECT 代理，Clash 里 `type: http`，目前少量存活
 - **SOCKS5 代理**：直接作为 `type: socks5` 节点
-- **SOCKS4 代理**：Clash 不支持 socks4 出站，脚本在本地开 SOCKS5 桥接端口转发。Clash 节点为 `type: socks5, server: 服务端_IP, port: 30000+`
+- **SOCKS4 代理**：Clash 不支持 socks4 出站，脚本在本地开 SOCKS5 桥接端口转发。Clash 节点为 `type: socks5, server: NAS_IP, port: 30000+`
 
 ### 订阅分组（19 组）
 ```
@@ -210,7 +210,7 @@ PROXY (主选择) → 包含 AUTO-Foreign/AUTO-CN + 4 个协议 All 组
 4. 检查统计：`curl "http://127.0.0.1:8080/api/stats?token=..."`，看 `alive` 数量
 
 ### Clash 连不上 socks4 网关节点
-1. 检查 `clash.gateway_host` 配置是否是 服务端 局域网 IP（不是 127.0.0.1）
+1. 检查 `clash.gateway_host` 配置是否是 NAS 局域网 IP（不是 127.0.0.1）
 2. 检查防火墙是否开放 30000-31999
 3. 查网关状态：`curl "http://127.0.0.1:8080/api/gateway/status?token=..."`，看 `active_bridges`
 
