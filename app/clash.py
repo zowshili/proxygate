@@ -204,9 +204,10 @@ def build_clash_config(
         "proxies": cn_names or all_names,
     })
 
-    # 按协议（HTTP / HTTPS / SOCKS5 / SOCKS4）建 All→Tier 组
+    # 按协议（HTTPS / SOCKS5）建 All→Tier 组；http/socks4 已不在采集范围，
+    # 空骨架组仅在后端 DB 仍有历史数据时才会出现
     proto_group_names: List[str] = []
-    for proto in ["http", "https", "socks5", "socks4"]:
+    for proto in ["https", "socks5", "http", "socks4"]:
         p_nodes = proto_nodes.get(proto, [])
         label = _PROTO_LABELS[proto]
         if not p_nodes:

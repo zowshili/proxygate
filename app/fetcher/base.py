@@ -37,27 +37,30 @@ class BaseFetcher(ABC):
 
     async def fetch_text(self, url: str, referer: str | None = None) -> str:
         """抓取页面文本。带 cookie 重试：站点反爬常先返回 521/403 设 cookie，
-        第二次带 cookie 访问即可通过。"""
+        第二次带 cookie 访问即可通过。
+
+        每次尝试用独立 session + force_close（新 TCP/TLS 连接）：CDN 边缘节点
+        轮询下，403/405/超时常是单个边缘节点的问题，新建连接即可换节点绕开。
+        """
         headers = self._browser_headers(referer)
-        cookie_jar = aiohttp.CookieJar(unsafe=True)
         timeout = aiohttp.ClientTimeout(total=self.fetch_cfg.timeout)
-        # 独立 session 以便每个源隔离 cookie；SSL 校验关闭（代理站点证书普遍不规范）
-        async with aiohttp.ClientSession(cookie_jar=cookie_jar) as sess:
-            for attempt in range(2):
-                try:
+        for attempt in range(2):
+            cookie_jar = aiohttp.CookieJar(unsafe=True)
+            conn = aiohttp.TCPConnector(force_close=True, ssl=False)
+            try:
+                async with aiohttp.ClientSession(cookie_jar=cookie_jar, connector=conn) as sess:
                     async with sess.get(url, headers=headers, timeout=timeout,
                                         ssl=False, allow_redirects=True) as resp:
-                        # 521/403/405 这种反爬先吃 cookie，不报错直接重试
-                        await resp.read()
-                        if resp.status in (403, 405, 521) and attempt == 0:
-                            log.debug("%s got %d, retry with cookies", url, resp.status)
+                        # 403/405/429/521 这种反爬先吃 cookie，不报错直接重试
+                        raw = await resp.read()
+                        if resp.status in (403, 405, 429, 521) and attempt == 0:
+                            log.debug("%s got %d, retry with fresh connection", url, resp.status)
                             await asyncio.sleep(1.2)
                             continue
                         if resp.status >= 400:
                             log.debug("%s status=%d", url, resp.status)
                             return ""
                         # 编码处理：aiohttp 默认按 header；fallback utf-8
-                        raw = await resp.read()
                         ctype = resp.headers.get("Content-Type", "")
                         enc = "utf-8"
                         for tok in ctype.replace(";", " ").split():
@@ -67,12 +70,12 @@ class BaseFetcher(ABC):
                             return raw.decode(enc, errors="ignore")
                         except (LookupError, UnicodeDecodeError):
                             return raw.decode("utf-8", errors="ignore")
-                except Exception as e:
-                    log.warning("fetch %s failed (attempt %d): %s", url, attempt + 1, e)
-                    if attempt == 0:
-                        await asyncio.sleep(1.0)
-                        continue  # 第一次失败后重试
-                    return ""
+            except Exception as e:
+                log.warning("fetch %s failed (attempt %d): %s", url, attempt + 1, e)
+                if attempt == 0:
+                    await asyncio.sleep(1.0)
+                    continue  # 第一次失败后换新连接重试
+                return ""
         return ""
 
     def _browser_headers(self, referer: str | None) -> dict:

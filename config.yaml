@@ -5,6 +5,7 @@
 #   2. web.host             部署到 NAS 改 0.0.0.0
 #   3. clash.gateway_host   改 NAS 的局域网 IP（socks4 网关节点用）
 # ============================================================
+# 协议说明：本配置只采集 socks5 / https 两类代理（探活自动过滤假货）。
 
 web:
   host: 0.0.0.0           # 部署到 NAS 改 0.0.0.0（局域网可访问）；仅本机用 127.0.0.1
@@ -23,86 +24,93 @@ fetch:
   max_pages: 5            # 分页源最多抓多少页
   user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
   sources:
-    # —— HTML 站点：提供 HTTP 代理（探活时自动过滤只留支持 CONNECT 隧道的）——
-    - name: "89ip"
-      url: "https://www.89ip.cn/index_{page}.html"
-      type: "89ip"
-      protocol: "http"          # 89ip 页面无类型列，实际都是 HTTP 代理
-      pages: 5
+    # —— 89ip：页面全是 HTTP 代理，按当前协议需求(仅 socks5/https)停用 ——
+    # - name: "89ip"
+    #   url: "https://www.89ip.cn/index_{page}.html"
+    #   type: "89ip"
+    #   protocol: "http"
+    #   pages: 5
+
+    # —— kuaidaili（快代理）：inha 每页约 15 条，类型列含 HTTP/HTTPS；
+    #    spider 按类型列过滤，https 类型探活时验证 CONNECT 隧道 ——
     - name: "kuaidaili"
       url: "https://www.kuaidaili.com/free/inha/{page}/"
       type: "kuaidaili"
-      protocol: "auto"          # 按页面类型列动态解析(http/https)
+      protocol: "auto"          # 按页面类型列动态解析，非 https 的行丢弃
       pages: 5
-    - name: "ip3366"
-      url: "http://www.ip3366.net/?stype=1&page={page}"
-      type: "ip3366"
-      protocol: "http"
-      pages: 5
+
+    # —— ip3366：JS 挑战(521)无 cookie 解法，已下线 ——
+    # - name: "ip3366"
+    #   url: "http://www.ip3366.net/?stype=1&page={page}"
+    #   type: "ip3366"
+    #   protocol: "http"
+    #   pages: 5
+
+    # —— qiyunip（齐云代理）：类型列含 HTTPS/SOCKS5 ——
     - name: "qiyunip"
       url: "https://www.qiyunip.com/freeProxy/{page}.html"
       type: "qiyunip"
-      protocol: "auto"          # 按页面"类型"列动态解析(http/https)
+      protocol: "auto"          # 按页面"类型"列动态解析
       pages: 5
-    # —— 66daili：按协议分 URL 抓 HTTPS/Socks4/Socks5（HTTP 也抓，让探活过滤）——
-    - name: "66daili-https"
-      url: "https://www.66daili.com/?protocol=HTTPS&response_time=3000&page={page}&size=15"
-      type: "daili66"
-      protocol: "auto"          # 按页面协议列
-      pages: 5
-    - name: "66daili-socks5"
-      url: "https://www.66daili.com/?protocol=Socks5&response_time=3000&page={page}&size=15"
-      type: "daili66"
-      protocol: "auto"
-      pages: 5
-    - name: "66daili-socks4"
-      url: "https://www.66daili.com/?protocol=Socks4&response_time=3000&page={page}&size=15"
-      type: "daili66"
-      protocol: "auto"
-      pages: 5
-    - name: "66daili-http"
-      url: "https://www.66daili.com/?protocol=HTTP&response_time=3000&page={page}&size=15"
-      type: "daili66"
-      protocol: "auto"
-      pages: 5
-    # —— francevpn.github.io：table 含 socks4/socks5 ——
+
+    # —— 66daili：域名已下线（连接失败），移除 ——
+    # - name: "66daili-*" ...
+
+    # —— francevpn.github.io：table 含 socks4/socks5，只取 socks5 行 ——
     - name: "francevpn"
       url: "https://francevpn.github.io/free-proxy-for-china/"
       type: "francevpn"
       protocol: "auto"
+
+    # —— zdaye（站大爷）：ul-row 结构，协议标签含 HTTPS/SOCKS4/SOCKS5；
+    #    翻页被 AliWAF 405，只抓第一页；AliWAF 挑战由 base fetch_text 吃 cookie 重试 ——
+    - name: "zdaye"
+      url: "https://www.zdaye.com/free/"
+      type: "zdaye"
+      protocol: "auto"
+      pages: 1
+
+    # —— seofangfa（SEO编程坊）：全站国内代理，data-proxy 属性易解析；
+    #    协议标签 HTTP/HTTPS/SOCKS4/SOCKS5，spider 只取 HTTPS/SOCKS5 ——
+    - name: "seofangfa"
+      url: "https://proxy.seofangfa.com/"
+      type: "seofangfa"
+      protocol: "auto"
+      pages: 1
+
+    # —— geonode API：country=CN 过滤 + protocols 参数，JSON 结构稳定 ——
+    - name: "geonode-cn"
+      url: "https://proxylist.geonode.com/api/proxy-list?limit=50&page={page}&country=CN&protocols=https%2Csocks5"
+      type: "geonode"
+      protocol: "auto"          # 按条目 protocols[] 动态解析
+      pages: 3                  # total≈45-70，50/页抓 3 页兜底翻页
+
     # —— TheSpeedX 聚合源（GitHub 纯文本，经国内可达镜像抓取）——
     - name: "thespeedx-socks5"
       url: "https://ghproxy.net/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt"
       type: "text"
       protocol: "socks5"
-    - name: "thespeedx-socks4"
-      url: "https://gh-proxy.com/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt"
-      type: "text"
-      protocol: "socks4"
 
-    # —— proxy.scdn.io API：取 20 个中国代理 × 4 种协议 ——
+    # —— monosans 聚合源（每 30 分钟更新，质量较高，socks5）——
+    - name: "monosans-socks5"
+      url: "https://ghproxy.net/https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    # —— proxy.scdn.io API：取 20 个中国代理 × 2 种协议 ——
     - name: "scdn-socks5"
       url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=CN"
       type: "scdn"
       protocol: "socks5"
-    - name: "scdn-socks4"
-      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks4&count=20&country_code=CN"
-      type: "scdn"
-      protocol: "socks4"
     - name: "scdn-https"
       url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=CN"
       type: "scdn"
       protocol: "https"
-    - name: "scdn-http"
-      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=http&count=20&country_code=CN"
-      type: "scdn"
-      protocol: "http"
 
-    # —— zdaye（站大爷）：spider 已实现，当前部署 IP 被其阿里云 WAF 拦截(405)。
-    #    换未被封 IP 后取消注释即可，URL 含 socks5/socks4/https 三种。 ——
-    # - name: "zdaye-socks5"
-    #   url: "https://www.zdaye.com/free/?ip_adr=&checktime=&sleep=1&cunhuo=6&dengji=&protocol=socks5"
-    #   type: "zdaye"
+    # —— proxyscrape API：域名被 GFW 污染（解析到假 IP），大陆部署不可达，已移除 ——
+    # - name: "proxyscrape-socks5"
+    #   url: "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=10000&country=CN"
+    #   type: "text"
     #   protocol: "socks5"
 
 check:
@@ -112,17 +120,18 @@ check:
   timeout: 4               # 单代理单次请求超时（秒）
   fail_threshold: 10       # 连续失败次数达到后删除
   alive_fail_to_dead: 5    # 连续失败次数达到后置 alive=0
+  max_alive_latency_ms: 3000  # 存活延迟上限：超过 3 秒的节点判死（0=不限）
   # 探活目标统一用 http（存活率更高，避免 https 目标 TLS 校验误杀）
   url_cn: "http://www.baidu.com"
   url_foreign: "http://www.gstatic.com/generate_204"
-  # HTTP 代理额外测这个 https 目标：CONNECT 隧道必须通才算 alive（过滤假 HTTP 代理）
+  # HTTP(S) 代理额外测这个 https 目标：CONNECT 隧道必须通才算 alive（过滤假 HTTP 代理）
   url_https_check: "https://www.baidu.com"
   expected_cn_status: 200
   expected_foreign_status: [200, 204]
   expected_https_status: [200, 302]
 
 gateway:
-  # socks4→socks5 网关：对存活的 socks4 代理在本地开 SOCKS5 端口转发
+  # socks4→socks5 网关：当前无 socks4 源，网关保持空转（不影响其他功能）
   listen_host: "0.0.0.0"   # 监听地址（局域网 Clash 连用 0.0.0.0；仅本机 127.0.0.1）
   port_start: 30000        # 网关端口范围起
   port_end: 31999          # 网关端口范围止
@@ -131,5 +140,6 @@ gateway:
 
 db: "data/proxies.db"
 log_level: "INFO"
-# 允许的协议（HTTP 代理探活时会用 CONNECT 隧道验证，只留真能用的）
-allowed_protocols: ["http", "https", "socks4", "socks5"]
+# 允许的协议：只要 socks5 / https（http/socks4 一律丢弃；
+# https 代理探活时用 CONNECT 隧道验证，只留真能用的）
+allowed_protocols: ["https", "socks5"]

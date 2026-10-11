@@ -60,6 +60,7 @@ class CheckConfig:
     expected_cn_status: int
     expected_foreign_status: List[int]
     expected_https_status: List[int]
+    max_alive_latency_ms: int = 0  # 存活延迟上限（ms），0=不限；超过则标死
     extra_headers: Dict[str, str] = field(default_factory=dict)
 
 
@@ -139,6 +140,7 @@ def load_config(path: str | None = None) -> AppConfig:
             expected_cn_status=int(raw["check"]["expected_cn_status"]),
             expected_foreign_status=list(raw["check"]["expected_foreign_status"]),
             expected_https_status=list(raw["check"]["expected_https_status"]),
+            max_alive_latency_ms=int(raw["check"].get("max_alive_latency_ms", 0)),
         ),
         gateway=GatewayConfig(
             listen_host=raw.get("gateway", {}).get("listen_host", "127.0.0.1"),

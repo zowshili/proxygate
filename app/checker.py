@@ -83,29 +83,34 @@ async def check_one(
     """探活单个代理，返回 (proxy, alive, latency_ms, cn, foreign)。
 
     - socks4/socks5: 测 cn(http) + foreign(http)，任一通即 alive
-    - http 代理: 先测 cn(http) 打标签，再额外测 https 目标验证 CONNECT 能力；
-      只有 CONNECT 通了才 alive（过滤假 HTTP 代理）。
+    - https 代理: 必须过 https 目标(CONNECT 隧道)才 alive；
+      CONNECT 通了顺带打 cn 标签（跳过独立 cn 探测，省一次请求）
     """
     timeout = cfg.timeout
+    max_lat = cfg.max_alive_latency_ms
 
     if proxy.protocol in ("socks4", "socks5"):
         cn_ok, cn_lat = await _probe_socks(proxy, cfg.url_cn, timeout, [cfg.expected_cn_status])
         fr_ok, fr_lat = await _probe_socks(proxy, cfg.url_foreign, timeout, cfg.expected_foreign_status)
         alive = cn_ok or fr_ok
         lats = [l for l in (cn_lat, fr_lat) if l > 0]
-        return proxy, alive, (min(lats) if lats else 0), cn_ok, fr_ok
+        lat = min(lats) if lats else 0
+        # 延迟上限：超标的直接判死（lat=-1 为策略淘汰标记，立即置 dead 不等宽限）
+        if alive and max_lat and lat > max_lat:
+            return proxy, False, -1, cn_ok, fr_ok
+        return proxy, alive, lat, cn_ok, fr_ok
 
-    # HTTP 代理
-    cn_ok, cn_lat = await _probe_http(proxy, cfg.url_cn, timeout, [cfg.expected_cn_status], base_session)
-    fr_ok, fr_lat = await _probe_http(proxy, cfg.url_foreign, timeout, cfg.expected_foreign_status, base_session)
-    # 额外测 https 目标：CONNECT 隧道必须通才算 alive
+    # HTTPS 代理：CONNECT 隧道验证（baidu https 目标，200/302 均算通）
     https_ok, https_lat = await _probe_http(
         proxy, cfg.url_https_check, timeout, cfg.expected_https_status, base_session
     )
-    alive = https_ok and (cn_ok or fr_ok)
-    # 延迟取 https 测试（这反映真实使用场景的延迟）
-    lat = https_lat if https_ok else 0
-    return proxy, alive, lat, cn_ok, fr_ok
+    if not https_ok:
+        return proxy, False, 0, False, False
+    if max_lat and https_lat > max_lat:
+        return proxy, False, -1, False, False
+    # CONNECT 通了但走的是 https 目标，cn 标签以 baidu http 快速验证（失败不影响 alive）
+    cn_ok, _ = await _probe_http(proxy, cfg.url_cn, timeout, [cfg.expected_cn_status], base_session)
+    return proxy, True, https_lat, cn_ok, False
 
 
 async def run_check_batch(
@@ -117,15 +122,37 @@ async def run_check_batch(
     if not proxies:
         return
 
-    # 总超时 = 单代理超时 × (代理数 / 并发数) × 1.5 倍保险
-    estimated = (len(proxies) / max(cfg.concurrency, 1)) * cfg.timeout * 1.5
-    total_timeout = max(estimated, 60)  # 最少 60 秒
+    # 总超时 = 单代理最坏耗时（socks/https 都是 2 次串行探测，各 timeout 秒）
+    #          × (代理数 / 并发数) × 1.5 倍保险。
+    # 旧公式只按 1 次探测估算，3773 条 backlog 实际需要 ~90s，60s 下大批代理
+    # 被截断未检（表现为存活数长时间偏低）。下限一并提高到 120s。
+    per_proxy_worst = cfg.timeout * 2
+    estimated = (len(proxies) / max(cfg.concurrency, 1)) * per_proxy_worst * 1.5
+    total_timeout = max(estimated, 120)  # 最少 120 秒
 
     sem = asyncio.Semaphore(cfg.concurrency)
     headers = {"User-Agent": "Mozilla/5.0 proxypool-checker"}
     resolver = AsyncResolver(timeout=2.0)
     conn = aiohttp.TCPConnector(limit=cfg.concurrency, ssl=False, force_close=True, resolver=resolver)
     progress = {"done": 0, "alive": 0}
+    # 批量落库缓冲：满 N 条或每 2 秒刷一次，减少 SQLite commit 对事件循环的阻塞
+    buf: list[tuple] = []
+    buf_lock = asyncio.Lock()
+    FLUSH_SIZE = 200
+
+    async def _flush():
+        if not buf:
+            return
+        async with buf_lock:
+            if not buf:
+                return
+            items, buf[:] = list(buf), []
+        store.mark_check_results_bulk(items, cfg.fail_threshold, cfg.alive_fail_to_dead)
+
+    async def _flush_loop():
+        while progress["done"] < len(proxies):
+            await asyncio.sleep(2)
+            await _flush()
 
     async with aiohttp.ClientSession(connector=conn, headers=headers) as base_session:
 
@@ -140,18 +167,17 @@ async def run_check_batch(
                     _, alive, lat, cn, fr = p, False, 0, False, False
                 except Exception:
                     _, alive, lat, cn, fr = p, False, 0, False, False
-            store.mark_check_result(
-                p.ip, p.port, p.protocol,
-                alive, lat, cn, fr,
-                cfg.fail_threshold, cfg.alive_fail_to_dead,
-            )
+            buf.append((p.ip, p.port, p.protocol, alive, lat, cn, fr))
+            if len(buf) >= FLUSH_SIZE:
+                await _flush()
             progress["done"] += 1
             if alive:
                 progress["alive"] += 1
-            if progress["done"] % 50 == 0:
+            if progress["done"] % 200 == 0:
                 log.info("check progress %d/%d alive=%d",
                          progress["done"], len(proxies), progress["alive"])
 
+        flush_task = asyncio.create_task(_flush_loop())
         try:
             await asyncio.wait_for(
                 asyncio.gather(*[_wrapped(p) for p in proxies], return_exceptions=True),
@@ -160,5 +186,8 @@ async def run_check_batch(
         except asyncio.TimeoutError:
             log.warning("check batch total timeout (%ds) reached, %d/%d done",
                         total_timeout, progress["done"], len(proxies))
+        finally:
+            flush_task.cancel()
+            await _flush()
 
     log.info("check batch done: %d/%d alive", progress["alive"], len(proxies))
