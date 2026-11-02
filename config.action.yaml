@@ -45,7 +45,7 @@ fetch:
       type: "geonode"
       protocol: "auto"
       region: "cn"
-      pages: 2
+      pages: 3
 
     - name: "scdn-cn-socks5"
       url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=CN"
@@ -65,7 +65,7 @@ fetch:
       type: "geonode"
       protocol: "auto"
       region: "hk"
-      pages: 2
+      pages: 3
 
     - name: "scdn-hk-socks5"
       url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=HK"
@@ -127,6 +127,30 @@ fetch:
     #   region: "cn"
     #   pages: 1
 
+    # ================= 大陆 HTTP 代理站 =================
+    # 这类站只有 HTTP 代理，用 https 协议身份入库：探活要求 CONNECT 隧道成功，
+    # 不能打洞的会在第一步就被淘汰，不会混进 Clash 配置。
+    - name: "ip3366"
+      url: "http://www.ip3366.net/free/?action=china&page={page}"
+      type: "ip3366"
+      protocol: "https"
+      region: "cn"
+      pages: 3
+
+    - name: "ip89"
+      url: "https://www.89ip.cn/index_{page}.html"
+      type: "ip89"
+      protocol: "https"
+      region: "cn"
+      pages: 3
+
+    # 全球 socks5 大列表（镜像）
+    - name: "hookzof-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt"
+      type: "text"
+      protocol: "socks5"
+
+
 check:
   new_interval: 300        # --once 模式下不使用
   full_interval: 3600      # --once 模式下不使用
@@ -134,7 +158,7 @@ check:
   timeout: 5               # 单代理单次探测超时（秒）
   fail_threshold: 10
   alive_fail_to_dead: 5
-  max_alive_latency_ms: 3000  # 存活延迟上限，超过判死（0=不限）
+  max_alive_latency_ms: 5000  # 存活延迟上限，超过判死（0=不限）
   url_cn: "http://www.baidu.com"
   url_foreign: "http://www.gstatic.com/generate_204"
   # runner 在境外，https 隧道用 gstatic 验证，避免 baidu 抖动导致整批 https 判死
@@ -150,7 +174,7 @@ geo:
   batch_size: 100          # ip-api 批量上限
   request_interval: 4.5    # 批间隔秒数（免费版 15 次/分钟）
   cache_days: 7            # 同一 IP 结果缓存天数
-  max_per_cycle: 800       # 每轮最多解析 IP 数
+  max_per_cycle: 1200      # 每轮最多解析 IP 数
 
 regions: ["cn", "hk"]
 retention_hours: 48        # 超过 48 小时抓不到且已死的行会被清理

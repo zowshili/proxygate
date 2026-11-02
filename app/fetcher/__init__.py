@@ -18,6 +18,8 @@ from .francevpn import FrancevpnFetcher
 from .text import TextFetcher
 from .proxyscdn import ProxyscdnFetcher
 from .geonode import GeonodeFetcher
+from .ip3366 import Ip3366Fetcher
+from .ip89 import Ip89Fetcher
 from .seofangfa import SeofangfaFetcher
 
 log = logging.getLogger(__name__)
@@ -30,6 +32,8 @@ _SPIDERS: dict[str, type[BaseFetcher]] = {
     "text": TextFetcher,
     "scdn": ProxyscdnFetcher,
     "geonode": GeonodeFetcher,
+    "ip3366": Ip3366Fetcher,
+    "ip89": Ip89Fetcher,
     "seofangfa": SeofangfaFetcher,
 }
 
