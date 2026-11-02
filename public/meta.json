@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-11-02T11:58:49Z",
+  "generated_at_cst": "2026-11-02 19:58:49",
+  "txt_format": "hostport",
+  "counts": {
+    "all": 586,
+    "cn": 12,
+    "hk": 7,
+    "socks5": 584,
+    "https": 2
+  },
+  "files": {
+    "proxies.txt": 586,
+    "proxies-cn.txt": 12,
+    "proxies-hk.txt": 7,
+    "proxies-socks5.txt": 584,
+    "proxies-https.txt": 2,
+    "clash.yaml": 586,
+    "clash-cn.yaml": 12,
+    "clash-hk.yaml": 7
+  },
+  "regions": [
+    "cn",
+    "hk"
+  ],
+  "max_alive_latency_ms": 3000,
+  "stats": {
+    "total": 8872,
+    "alive": 586,
+    "alive_foreign_reachable": 537,
+    "alive_cn_reachable": 509,
+    "by_protocol": {
+      "https": 2,
+      "socks5": 584
+    },
+    "by_region": {
+      "cn": 12,
+      "hk": 7,
+      "other": 567
+    },
+    "by_source": {
+      "geonode-cn": 1,
+      "geonode-hk": 2,
+      "hideip-socks5": 40,
+      "monosans-socks5": 210,
+      "proxifly-cn": 9,
+      "proxifly-hk": 2,
+      "proxifly-socks5": 51,
+      "qiyunip": 1,
+      "thespeedx-socks5": 270
+    },
+    "geo_cached": 281,
+    "last_fetch_at": 1793620654,
+    "last_check_at": 1793620720,
+    "version": 46
+  }
+}
