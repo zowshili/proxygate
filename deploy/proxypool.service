@@ -1,17 +1,15 @@
 [Unit]
-Description=ProxyPool - Free Proxy Aggregator & Clash Subscription
+Description=ProxyPool v2 - Free Proxy Aggregator & Clash Subscription
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=simple
-# 项目目录与 venv（按实际路径修改）
-WorkingDirectory=%h/桌面/工作目录/proxypool
-ExecStart=%h/桌面/工作目录/proxypool/.venv/bin/python main.py
-# 崩溃后 10 秒自动重启
+WorkingDirectory=/home/zaoshili/proxypool
+ExecStart=/home/zaoshili/proxypool/.venv/bin/python main.py
 Restart=on-failure
 RestartSec=10
-# 标准输出/错误走 journal
+# 日志同时写 journal 与 logs/proxypool.log
 StandardOutput=journal
 StandardError=journal
 

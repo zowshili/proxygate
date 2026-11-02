@@ -1,145 +1,156 @@
-# 代理池配置文件
+# proxypool v2.0.0 配置
 # ============================================================
-# 部署前必改：
-#   1. web.token            改为强随机字符串
-#   2. web.host             部署到 NAS 改 0.0.0.0
-#   3. clash.gateway_host   改 NAS 的局域网 IP（socks4 网关节点用）
+# 部署前必改：web.token（强随机字符串）
+# 区域：cn=中国大陆，hk=香港。代理归属由 geo 库按 IP 判定，
+#       源里写的 region 只是初始值，探活后会校正。
 # ============================================================
-# 协议说明：本配置只采集 socks5 / https 两类代理（探活自动过滤假货）。
 
 web:
-  host: 0.0.0.0           # 部署到 NAS 改 0.0.0.0（局域网可访问）；仅本机用 127.0.0.1
+  host: 0.0.0.0
   port: 8080
-  token: "YOUR_SECURE_TOKEN_HERE"   # 部署前务必改为强随机串
-
-clash:
-  # socks4→socks5 网关注册到 Clash 订阅时用的地址。
-  # Clash 与脚本同机器用 127.0.0.1；Clash 在其他设备（局域网）用 NAS 的局域网 IP。
-  gateway_host: "YOUR_NAS_LAN_IP_HERE"
+  token: "YOUR_SECURE_TOKEN_HERE"
 
 fetch:
   interval_seconds: 900   # 采集间隔（15 分钟）
-  jitter_seconds: 60      # 随机抖动（±60 秒）
+  jitter_seconds: 60
   timeout: 15             # 单源抓取超时
-  max_pages: 5            # 分页源最多抓多少页
   user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
   sources:
-    # —— 89ip：页面全是 HTTP 代理，按当前协议需求(仅 socks5/https)停用 ——
-    # - name: "89ip"
-    #   url: "https://www.89ip.cn/index_{page}.html"
-    #   type: "89ip"
-    #   protocol: "http"
-    #   pages: 5
-
-    # —— kuaidaili（快代理）：inha 每页约 15 条，类型列含 HTTP/HTTPS；
-    #    spider 按类型列过滤，https 类型探活时验证 CONNECT 隧道 ——
+    # ================= 中国大陆源 =================
     - name: "kuaidaili"
       url: "https://www.kuaidaili.com/free/inha/{page}/"
       type: "kuaidaili"
-      protocol: "auto"          # 按页面类型列动态解析，非 https 的行丢弃
-      pages: 5
+      protocol: "auto"
+      region: "cn"
+      pages: 3
 
-    # —— ip3366：JS 挑战(521)无 cookie 解法，已下线 ——
-    # - name: "ip3366"
-    #   url: "http://www.ip3366.net/?stype=1&page={page}"
-    #   type: "ip3366"
-    #   protocol: "http"
-    #   pages: 5
-
-    # —— qiyunip（齐云代理）：类型列含 HTTPS/SOCKS5 ——
     - name: "qiyunip"
       url: "https://www.qiyunip.com/freeProxy/{page}.html"
       type: "qiyunip"
-      protocol: "auto"          # 按页面"类型"列动态解析
-      pages: 5
+      protocol: "auto"
+      region: "cn"
+      pages: 3
 
-    # —— 66daili：域名已下线（连接失败），移除 ——
-    # - name: "66daili-*" ...
+    # 站大爷：免费列表只开第一页（翻页 405）
+    - name: "zdaye"
+      url: "https://www.zdaye.com/free/"
+      type: "zdaye"
+      protocol: "auto"
+      region: "cn"
+      pages: 1
 
-    # —— francevpn.github.io：table 含 socks4/socks5，只取 socks5 行 ——
+    - name: "geonode-cn"
+      url: "https://proxylist.geonode.com/api/proxy-list?limit=100&page={page}&country=CN&protocols=https%2Csocks5"
+      type: "geonode"
+      protocol: "auto"
+      region: "cn"
+      pages: 2
+
+    - name: "scdn-cn-socks5"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=CN"
+      type: "scdn"
+      protocol: "socks5"
+      region: "cn"
+
+    - name: "scdn-cn-https"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=CN"
+      type: "scdn"
+      protocol: "https"
+      region: "cn"
+
+    # ================= 香港源 =================
+    - name: "geonode-hk"
+      url: "https://proxylist.geonode.com/api/proxy-list?limit=100&page={page}&country=HK&protocols=https%2Csocks5"
+      type: "geonode"
+      protocol: "auto"
+      region: "hk"
+      pages: 2
+
+    - name: "scdn-hk-socks5"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=HK"
+      type: "scdn"
+      protocol: "socks5"
+      region: "hk"
+
+    - name: "scdn-hk-https"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=HK"
+      type: "scdn"
+      protocol: "https"
+      region: "hk"
+
+    # proxifly 按国家切分的列表（已是 socks5:// / https:// 前缀，text 解析器直接吃）
+    - name: "proxifly-cn"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/CN/data.txt"
+      type: "text"
+      protocol: "auto"
+      region: "cn"
+
+    - name: "proxifly-hk"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/HK/data.txt"
+      type: "text"
+      protocol: "auto"
+      region: "hk"
+
+    # ================= 全球源（由 geo 判定 CN/HK） =================
+    - name: "monosans-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "thespeedx-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "proxifly-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "hideip-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/zloi-user/hideip.me/main/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    # francevpn：面向国内的免费列表，区域交给 geo 判定
     - name: "francevpn"
       url: "https://francevpn.github.io/free-proxy-for-china/"
       type: "francevpn"
       protocol: "auto"
 
-    # —— zdaye（站大爷）：ul-row 结构，协议标签含 HTTPS/SOCKS4/SOCKS5；
-    #    翻页被 AliWAF 405，只抓第一页；AliWAF 挑战由 base fetch_text 吃 cookie 重试 ——
-    - name: "zdaye"
-      url: "https://www.zdaye.com/free/"
-      type: "zdaye"
-      protocol: "auto"
-      pages: 1
-
-    # —— seofangfa（SEO编程坊）：全站国内代理，data-proxy 属性易解析；
-    #    协议标签 HTTP/HTTPS/SOCKS4/SOCKS5，spider 只取 HTTPS/SOCKS5 ——
-    - name: "seofangfa"
-      url: "https://proxy.seofangfa.com/"
-      type: "seofangfa"
-      protocol: "auto"
-      pages: 1
-
-    # —— geonode API：country=CN 过滤 + protocols 参数，JSON 结构稳定 ——
-    - name: "geonode-cn"
-      url: "https://proxylist.geonode.com/api/proxy-list?limit=50&page={page}&country=CN&protocols=https%2Csocks5"
-      type: "geonode"
-      protocol: "auto"          # 按条目 protocols[] 动态解析
-      pages: 3                  # total≈45-70，50/页抓 3 页兜底翻页
-
-    # —— TheSpeedX 聚合源（GitHub 纯文本，经国内可达镜像抓取）——
-    - name: "thespeedx-socks5"
-      url: "https://ghproxy.net/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt"
-      type: "text"
-      protocol: "socks5"
-
-    # —— monosans 聚合源（每 30 分钟更新，质量较高，socks5）——
-    - name: "monosans-socks5"
-      url: "https://ghproxy.net/https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt"
-      type: "text"
-      protocol: "socks5"
-
-    # —— proxy.scdn.io API：取 20 个中国代理 × 2 种协议 ——
-    - name: "scdn-socks5"
-      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=CN"
-      type: "scdn"
-      protocol: "socks5"
-    - name: "scdn-https"
-      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=CN"
-      type: "scdn"
-      protocol: "https"
-
-    # —— proxyscrape API：域名被 GFW 污染（解析到假 IP），大陆部署不可达，已移除 ——
-    # - name: "proxyscrape-socks5"
-    #   url: "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=10000&country=CN"
-    #   type: "text"
-    #   protocol: "socks5"
+    # seofangfa：域名当前在 NAS 上解析失败，恢复后取消注释
+    # - name: "seofangfa"
+    #   url: "https://proxy.seofangfa.com/"
+    #   type: "seofangfa"
+    #   protocol: "auto"
+    #   region: "cn"
+    #   pages: 1
 
 check:
   new_interval: 300        # 保活/新代理探活间隔（5 分钟）
-  full_interval: 1800      # 全量探活间隔（30 分钟）
+  full_interval: 3600      # 全量探活（含已死节点），1 小时
   concurrency: 500         # 异步并发上限
-  timeout: 4               # 单代理单次请求超时（秒）
+  timeout: 4               # 单代理单次探测超时（秒）
   fail_threshold: 10       # 连续失败次数达到后删除
   alive_fail_to_dead: 5    # 连续失败次数达到后置 alive=0
-  max_alive_latency_ms: 3000  # 存活延迟上限：超过 3 秒的节点判死（0=不限）
-  # 探活目标统一用 http（存活率更高，避免 https 目标 TLS 校验误杀）
+  max_alive_latency_ms: 3000  # 存活延迟上限，超过判死（0=不限）
   url_cn: "http://www.baidu.com"
   url_foreign: "http://www.gstatic.com/generate_204"
-  # HTTP(S) 代理额外测这个 https 目标：CONNECT 隧道必须通才算 alive（过滤假 HTTP 代理）
   url_https_check: "https://www.baidu.com"
-  expected_cn_status: 200
-  expected_foreign_status: [200, 204]
+  expected_cn_status: [200, 301, 302]
+  expected_foreign_status: [204]
   expected_https_status: [200, 302]
 
-gateway:
-  # socks4→socks5 网关：当前无 socks4 源，网关保持空转（不影响其他功能）
-  listen_host: "0.0.0.0"   # 监听地址（局域网 Clash 连用 0.0.0.0；仅本机 127.0.0.1）
-  port_start: 30000        # 网关端口范围起
-  port_end: 31999          # 网关端口范围止
-  # 注意：listen_host=0.0.0.0 意味着局域网内任何人都可连你的桥接端口（无认证）
-  #       部署时建议用防火墙限制 port_start-port_end 段只允许信任设备
+geo:
+  enabled: true
+  endpoint: "http://ip-api.com/batch"
+  batch_size: 100          # ip-api 批量上限
+  request_interval: 4.5    # 批间隔秒数（免费版 15 次/分钟）
+  cache_days: 7            # 同一 IP 结果缓存天数
+  max_per_cycle: 400       # 每轮最多解析 IP 数
 
+regions: ["cn", "hk"]
+retention_hours: 48        # 超过 48 小时抓不到且已死的行会被清理
 db: "data/proxies.db"
 log_level: "INFO"
-# 允许的协议：只要 socks5 / https（http/socks4 一律丢弃；
-# https 代理探活时用 CONNECT 隧道验证，只留真能用的）
 allowed_protocols: ["https", "socks5"]

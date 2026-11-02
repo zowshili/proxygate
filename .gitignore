@@ -29,3 +29,8 @@ config.local.yaml
 # 临时文件
 /tmp/
 /proxypool.db
+
+# 运行产物
+logs/
+data/
+public/.tmp-*

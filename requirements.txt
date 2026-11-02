@@ -2,13 +2,11 @@ fastapi>=0.110
 uvicorn[standard]>=0.27
 aiohttp>=3.9
 aiodns>=3.0
-aiohttp-socks>=0.8
 APScheduler>=3.10
-# bs4/soupsieve 必须钉死：soupsieve 3.x 的 CSS 选择器正则（占有优先量词嵌套）
-# 在部分 Python 3.11 构建上触发 re 模块 bug（select() 全部报 SelectorSyntaxError）
+# bs4/soupsieve 必须钉死：soupsieve 3.x 的 CSS 选择器正则在部分 Python 3.11
+# 构建上触发 re 模块 bug（select() 全部报 SelectorSyntaxError）
 beautifulsoup4==4.12.3
 soupsieve==2.5
 lxml>=5.1
 PyYAML>=6.0
-# 如需绕过 zdaye 的 TLS 指纹 WAF，取消下面注释并改用 curl_cffi 抓取
-# curl_cffi>=0.7
+# v2.0.0 已移除 aiohttp-socks：socks5 探活改为原生 asyncio 握手

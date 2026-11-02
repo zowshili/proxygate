@@ -1,0 +1,97 @@
+name: Update proxy lists
+
+# 每 30 分钟跑一轮完整流程：采集 → 探活 → 区域判定 → 导出 txt / Clash → 提交回仓库。
+# 公开仓库的 Actions 不计分钟数，可以长时间挂着跑。
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+    inputs:
+      txt_format:
+        description: "txt 输出格式"
+        type: choice
+        default: hostport
+        options:
+          - hostport
+          - scheme
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "main.py"
+      - "config.action.yaml"
+      - "requirements.txt"
+      - ".github/workflows/**"
+
+concurrency:
+  group: update-proxies
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    # 机器人自己的数据提交不再触发新一轮，避免推送回环
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Collect, check, export
+        env:
+          FMT: ${{ github.event.inputs.txt_format || 'hostport' }}
+        run: python main.py --once -c config.action.yaml --out public --fmt "$FMT"
+
+      - name: Job summary
+        if: always()
+        run: |
+          if [ -f public/meta.json ]; then
+            python - "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json, sys
+          m = json.load(open("public/meta.json", encoding="utf-8"))
+          c = m["counts"]
+          lines = [
+              "### ProxyGate run",
+              "",
+              f"- 生成时间：{m['generated_at']}（UTC）",
+              f"- 存活总数：**{c['all']}**",
+              f"- 大陆 / 香港：{c.get('cn', 0)} / {c.get('hk', 0)}",
+              f"- socks5 / https：{c.get('socks5', 0)} / {c.get('https', 0)}",
+          ]
+          open(sys.argv[1], "a", encoding="utf-8").write("\n".join(lines) + "\n")
+          PY
+          else
+            echo "meta.json 未生成，流程提前失败" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit outputs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          # 可选：加一个 fine-grained PAT（contents:write）到 secrets.PROXYGATE_PAT，
+          # 让提交算作真实用户活动，避免定时任务在 60 天无活动后被 GitHub 停用。
+          PROXYGATE_PAT: ${{ secrets.PROXYGATE_PAT }}
+        run: |
+          TOKEN="${PROXYGATE_PAT:-$GITHUB_TOKEN}"
+          git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public
+          if git diff --cached --quiet; then
+            echo "no change, skip commit"
+            exit 0
+          fi
+          git commit -m "chore(data): refresh proxies $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push

@@ -116,7 +116,13 @@ class BaseFetcher(ABC):
             html = await self.fetch_text(url, referer=origin)
             if html:
                 try:
-                    results.extend(await self.parse(html, self.cfg))
+                    parsed = await self.parse(html, self.cfg)
+                    if self.cfg.region:
+                        # 源声明的区域作为初值；探活后由地理库校正
+                        for p in parsed:
+                            if not p.region:
+                                p.region = self.cfg.region
+                    results.extend(parsed)
                 except Exception as e:
                     log.warning("parse %s page=%s failed: %s", self.cfg.name, page, e)
             if has_placeholder:

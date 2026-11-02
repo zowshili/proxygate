@@ -1,0 +1,159 @@
+# ProxyGate v2.0.0 — GitHub Actions 专用配置（python main.py --once）
+# ============================================================
+# 部署前必改：web.token（强随机字符串）
+# 区域：cn=中国大陆，hk=香港。代理归属由 geo 库按 IP 判定，
+#       源里写的 region 只是初始值，探活后会校正。
+# ============================================================
+
+# --once 模式不监听端口，web 段仅为配置完整性保留
+web:
+  host: 127.0.0.1
+  port: 8080
+  token: ""
+
+fetch:
+  interval_seconds: 900   # 采集间隔（15 分钟）
+  jitter_seconds: 60
+  timeout: 15             # 单源抓取超时
+  user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+  sources:
+    # ================= 中国大陆源 =================
+    - name: "kuaidaili"
+      url: "https://www.kuaidaili.com/free/inha/{page}/"
+      type: "kuaidaili"
+      protocol: "auto"
+      region: "cn"
+      pages: 3
+
+    - name: "qiyunip"
+      url: "https://www.qiyunip.com/freeProxy/{page}.html"
+      type: "qiyunip"
+      protocol: "auto"
+      region: "cn"
+      pages: 3
+
+    # 站大爷：免费列表只开第一页（翻页 405）
+    - name: "zdaye"
+      url: "https://www.zdaye.com/free/"
+      type: "zdaye"
+      protocol: "auto"
+      region: "cn"
+      pages: 1
+
+    - name: "geonode-cn"
+      url: "https://proxylist.geonode.com/api/proxy-list?limit=100&page={page}&country=CN&protocols=https%2Csocks5"
+      type: "geonode"
+      protocol: "auto"
+      region: "cn"
+      pages: 2
+
+    - name: "scdn-cn-socks5"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=CN"
+      type: "scdn"
+      protocol: "socks5"
+      region: "cn"
+
+    - name: "scdn-cn-https"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=CN"
+      type: "scdn"
+      protocol: "https"
+      region: "cn"
+
+    # ================= 香港源 =================
+    - name: "geonode-hk"
+      url: "https://proxylist.geonode.com/api/proxy-list?limit=100&page={page}&country=HK&protocols=https%2Csocks5"
+      type: "geonode"
+      protocol: "auto"
+      region: "hk"
+      pages: 2
+
+    - name: "scdn-hk-socks5"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=socks5&count=20&country_code=HK"
+      type: "scdn"
+      protocol: "socks5"
+      region: "hk"
+
+    - name: "scdn-hk-https"
+      url: "https://proxy.scdn.io/api/get_proxy.php?protocol=https&count=20&country_code=HK"
+      type: "scdn"
+      protocol: "https"
+      region: "hk"
+
+    # proxifly 按国家切分的列表（已是 socks5:// / https:// 前缀，text 解析器直接吃）
+    - name: "proxifly-cn"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/CN/data.txt"
+      type: "text"
+      protocol: "auto"
+      region: "cn"
+
+    - name: "proxifly-hk"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/HK/data.txt"
+      type: "text"
+      protocol: "auto"
+      region: "hk"
+
+    # ================= 全球源（由 geo 判定 CN/HK） =================
+    - name: "monosans-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "thespeedx-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "proxifly-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/socks5/data.txt"
+      type: "text"
+      protocol: "socks5"
+
+    - name: "hideip-socks5"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/zloi-user/hideip.me/main/socks5.txt"
+      type: "text"
+      protocol: "socks5"
+
+    # francevpn：面向国内的免费列表，区域交给 geo 判定
+    - name: "francevpn"
+      url: "https://francevpn.github.io/free-proxy-for-china/"
+      type: "francevpn"
+      protocol: "auto"
+
+    # seofangfa：域名当前在 NAS 上解析失败，恢复后取消注释
+    # - name: "seofangfa"
+    #   url: "https://proxy.seofangfa.com/"
+    #   type: "seofangfa"
+    #   protocol: "auto"
+    #   region: "cn"
+    #   pages: 1
+
+check:
+  new_interval: 300        # --once 模式下不使用
+  full_interval: 3600      # --once 模式下不使用
+  concurrency: 512         # 异步并发上限（runner 带宽充足）
+  timeout: 5               # 单代理单次探测超时（秒）
+  fail_threshold: 10
+  alive_fail_to_dead: 5
+  max_alive_latency_ms: 3000  # 存活延迟上限，超过判死（0=不限）
+  url_cn: "http://www.baidu.com"
+  url_foreign: "http://www.gstatic.com/generate_204"
+  # runner 在境外，https 隧道用 gstatic 验证，避免 baidu 抖动导致整批 https 判死
+  url_https_check: "https://www.gstatic.com/generate_204"
+  expected_cn_status: [200, 301, 302]
+  expected_foreign_status: [204]
+  expected_https_status: [200, 204]
+  max_per_cycle: 9000      # 单轮最多探活条数（--once 首轮需覆盖全部新代理）
+
+geo:
+  enabled: true
+  endpoint: "http://ip-api.com/batch"
+  batch_size: 100          # ip-api 批量上限
+  request_interval: 4.5    # 批间隔秒数（免费版 15 次/分钟）
+  cache_days: 7            # 同一 IP 结果缓存天数
+  max_per_cycle: 800       # 每轮最多解析 IP 数
+
+regions: ["cn", "hk"]
+retention_hours: 48        # 超过 48 小时抓不到且已死的行会被清理
+db: "data/ci.db"
+log_level: "INFO"
+allowed_protocols: ["https", "socks5"]
