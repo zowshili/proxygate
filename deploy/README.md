@@ -1,4 +1,6 @@
-# ProxyPool 部署指南（Debian NAS）
+# ProxyPool 部署指南
+
+- 如果你需要部署，这份README只是一个过去的参考，其未随着版本更新而变动
 
 ## 架构
 
@@ -149,8 +151,6 @@ HTTPS-All       (HTTPS CONNECT 代理)
   HTTPS-Fast/Medium/Slow
 SOCKS5-All      (原生 SOCKS5 代理)
   SOCKS5-Fast/Medium/Slow
-SOCKS4-All      (经网关桥接的 SOCKS4 代理)
-  SOCKS4-Fast/Medium/Slow
 ```
 
 **使用方式**：在 PROXY 组里选 e.g. `SOCKS5-Fast` 只用低延迟节点，或 `AUTO-Foreign` 自动测速。
@@ -182,24 +182,12 @@ SOCKS4-All      (经网关桥接的 SOCKS4 代理)
 - **HTTP 代理**：探活时用 CONNECT 隧道验证，必须能通 `https://www.baidu.com` 才算存活。免费站基本不支持，所以目前为骨架空组
 - **HTTPS 代理**：66daili 标的"HTTPS"实际是 HTTP CONNECT 代理，Clash 里 `type: http`，目前少量存活
 - **SOCKS5 代理**：直接作为 `type: socks5` 节点
-- **SOCKS4 代理**：Clash 不支持 socks4 出站，脚本在本地开 SOCKS5 桥接端口转发。Clash 节点为 `type: socks5, server: NAS_IP, port: 30000+`
-
-### 订阅分组（19 组）
-```
-PROXY (主选择) → 包含 AUTO-Foreign/AUTO-CN + 4 个协议 All 组
-├── AUTO-Foreign (url-test, 可通外网节点)
-├── AUTO-CN     (url-test, 可通百度节点)
-├── HTTP-All → HTTP-Fast / HTTP-Medium / HTTP-Slow
-├── HTTPS-All → HTTPS-Fast / HTTPS-Medium / HTTPS-Slow
-├── SOCKS5-All → SOCKS5-Fast / SOCKS5-Medium / SOCKS5-Slow
-└── SOCKS4-All → SOCKS4-Fast / SOCKS4-Medium / SOCKS4-Slow
-```
 
 ### 节点名称格式
 ```
 001|s5|CN|1.2.3.4:1080|cn-foreign|1.2s
 ``` 
-每段含义：序号 | 协议标签(s5/s4/http/https) | 国家 | IP:端口 | 可用标签 | 延迟
+每段含义：序号 | 协议标签(s5/http/https) | 国家 | IP:端口 | 可用标签 | 延迟
 
 ## 五、故障排查
 
@@ -209,14 +197,8 @@ PROXY (主选择) → 包含 AUTO-Foreign/AUTO-CN + 4 个协议 All 组
 3. 手动触发：`curl -X POST "http://127.0.0.1:8080/api/update?token=..."`
 4. 检查统计：`curl "http://127.0.0.1:8080/api/stats?token=..."`，看 `alive` 数量
 
-### Clash 连不上 socks4 网关节点
-1. 检查 `clash.gateway_host` 配置是否是 NAS 局域网 IP（不是 127.0.0.1）
-2. 检查防火墙是否开放 30000-31999
-3. 查网关状态：`curl "http://127.0.0.1:8080/api/gateway/status?token=..."`，看 `active_bridges`
-
 ### 探活存活率低
 - 免费代理存活率约 5-15%（测试已确认），属正常
-- 如果 socks4 全死（0 存活），检查 `config.yaml` 的 `allowed_protocols` 是否包含 `"socks4"`
 - 用 curl 对照验证：`curl --socks4 <ip>:<port> http://www.baidu.com`
 
 ### 手动改源
