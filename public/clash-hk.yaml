@@ -5,45 +5,51 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-- name: 001|s5|HK|45.194.33.12:30001|cn-foreign|807ms
+- name: 001|s5|HK|123.58.219.171:10808|cn-foreign|701ms
+  type: socks5
+  server: 123.58.219.171
+  port: 10808
+  udp: false
+  skip-cert-verify: true
+- name: 002|https|HK|43.161.254.16:3128|cn|742ms
+  type: http
+  server: 43.161.254.16
+  port: 3128
+  udp: false
+- name: 003|s5|HK|45.194.33.12:30001|cn-foreign|920ms
   type: socks5
   server: 45.194.33.12
   port: 30001
   udp: false
   skip-cert-verify: true
-- name: 002|https|HK|43.161.254.16:3128|cn|891ms
-  type: http
-  server: 43.161.254.16
-  port: 3128
-  udp: false
-- name: 003|s5|HK|216.236.6.203:7890|foreign|992ms
+- name: 004|s5|HK|156.241.73.198:1080|cn-foreign|1.3s
   type: socks5
-  server: 216.236.6.203
-  port: 7890
+  server: 156.241.73.198
+  port: 1080
   udp: false
   skip-cert-verify: true
-- name: 004|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
+- name: 005|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
   type: socks5
   server: 45.194.33.12
   port: 30002
   udp: false
   skip-cert-verify: true
-- name: 005|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
+- name: 006|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
   type: socks5
   server: 112.121.173.84
   port: 1080
   udp: false
   skip-cert-verify: true
-- name: 006|s5|HK|68.64.179.186:1080|foreign|2.2s
-  type: socks5
-  server: 68.64.179.186
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 007|s5|HK|193.134.210.148:1080|cn-foreign|2.8s
+- name: 007|s5|HK|193.134.210.148:1080|cn|1.9s
   type: socks5
   server: 193.134.210.148
   port: 1080
+  udp: false
+  skip-cert-verify: true
+- name: 008|s5|HK|101.36.112.205:1081|cn-foreign|2.7s
+  type: socks5
+  server: 101.36.112.205
+  port: 1081
   udp: false
   skip-cert-verify: true
 proxy-groups:
@@ -61,23 +67,26 @@ proxy-groups:
   interval: 300
   tolerance: 100
   proxies:
-  - 001|s5|HK|45.194.33.12:30001|cn-foreign|807ms
-  - 003|s5|HK|216.236.6.203:7890|foreign|992ms
-  - 004|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
-  - 005|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
-  - 006|s5|HK|68.64.179.186:1080|foreign|2.2s
-  - 007|s5|HK|193.134.210.148:1080|cn-foreign|2.8s
+  - 001|s5|HK|123.58.219.171:10808|cn-foreign|701ms
+  - 003|s5|HK|45.194.33.12:30001|cn-foreign|920ms
+  - 004|s5|HK|156.241.73.198:1080|cn-foreign|1.3s
+  - 005|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
+  - 006|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
+  - 008|s5|HK|101.36.112.205:1081|cn-foreign|2.7s
 - name: AUTO-CN
   type: url-test
   url: http://www.baidu.com
   interval: 300
   tolerance: 100
   proxies:
-  - 001|s5|HK|45.194.33.12:30001|cn-foreign|807ms
-  - 002|https|HK|43.161.254.16:3128|cn|891ms
-  - 004|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
-  - 005|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
-  - 007|s5|HK|193.134.210.148:1080|cn-foreign|2.8s
+  - 001|s5|HK|123.58.219.171:10808|cn-foreign|701ms
+  - 002|https|HK|43.161.254.16:3128|cn|742ms
+  - 003|s5|HK|45.194.33.12:30001|cn-foreign|920ms
+  - 004|s5|HK|156.241.73.198:1080|cn-foreign|1.3s
+  - 005|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
+  - 006|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
+  - 007|s5|HK|193.134.210.148:1080|cn|1.9s
+  - 008|s5|HK|101.36.112.205:1081|cn-foreign|2.7s
 - name: HTTPS-All
   type: select
   proxies:
@@ -87,7 +96,7 @@ proxy-groups:
 - name: HTTPS-Fast
   type: select
   proxies:
-  - 002|https|HK|43.161.254.16:3128|cn|891ms
+  - 002|https|HK|43.161.254.16:3128|cn|742ms
 - name: HTTPS-Medium
   type: select
   proxies:
@@ -105,15 +114,16 @@ proxy-groups:
 - name: SOCKS5-Fast
   type: select
   proxies:
-  - 001|s5|HK|45.194.33.12:30001|cn-foreign|807ms
-  - 003|s5|HK|216.236.6.203:7890|foreign|992ms
+  - 001|s5|HK|123.58.219.171:10808|cn-foreign|701ms
+  - 003|s5|HK|45.194.33.12:30001|cn-foreign|920ms
 - name: SOCKS5-Medium
   type: select
   proxies:
-  - 004|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
-  - 005|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
-  - 006|s5|HK|68.64.179.186:1080|foreign|2.2s
-  - 007|s5|HK|193.134.210.148:1080|cn-foreign|2.8s
+  - 004|s5|HK|156.241.73.198:1080|cn-foreign|1.3s
+  - 005|s5|HK|45.194.33.12:30002|cn-foreign|1.6s
+  - 006|s5|HK|112.121.173.84:1080|cn-foreign|1.9s
+  - 007|s5|HK|193.134.210.148:1080|cn|1.9s
+  - 008|s5|HK|101.36.112.205:1081|cn-foreign|2.7s
 - name: SOCKS5-Slow
   type: select
   proxies:

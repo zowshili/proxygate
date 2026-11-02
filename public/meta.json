@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-11-02T11:58:49Z",
-  "generated_at_cst": "2026-11-02 19:58:49",
+  "generated_at": "2026-11-02T12:03:46Z",
+  "generated_at_cst": "2026-11-02 20:03:46",
   "txt_format": "hostport",
   "counts": {
-    "all": 586,
-    "cn": 12,
-    "hk": 7,
-    "socks5": 584,
-    "https": 2
+    "all": 525,
+    "cn": 13,
+    "hk": 8,
+    "socks5": 522,
+    "https": 3
   },
   "files": {
-    "proxies.txt": 586,
-    "proxies-cn.txt": 12,
-    "proxies-hk.txt": 7,
-    "proxies-socks5.txt": 584,
-    "proxies-https.txt": 2,
-    "clash.yaml": 586,
-    "clash-cn.yaml": 12,
-    "clash-hk.yaml": 7
+    "proxies.txt": 525,
+    "proxies-cn.txt": 13,
+    "proxies-hk.txt": 8,
+    "proxies-socks5.txt": 522,
+    "proxies-https.txt": 3,
+    "clash.yaml": 525,
+    "clash-cn.yaml": 13,
+    "clash-hk.yaml": 8
   },
   "regions": [
     "cn",
@@ -25,33 +25,34 @@
   ],
   "max_alive_latency_ms": 3000,
   "stats": {
-    "total": 8872,
-    "alive": 586,
-    "alive_foreign_reachable": 537,
-    "alive_cn_reachable": 509,
+    "total": 8995,
+    "alive": 525,
+    "alive_foreign_reachable": 467,
+    "alive_cn_reachable": 469,
     "by_protocol": {
-      "https": 2,
-      "socks5": 584
+      "https": 3,
+      "socks5": 522
     },
     "by_region": {
-      "cn": 12,
-      "hk": 7,
-      "other": 567
+      "cn": 13,
+      "hk": 8,
+      "other": 504
     },
     "by_source": {
       "geonode-cn": 1,
       "geonode-hk": 2,
-      "hideip-socks5": 40,
-      "monosans-socks5": 210,
+      "hideip-socks5": 70,
+      "monosans-socks5": 158,
       "proxifly-cn": 9,
-      "proxifly-hk": 2,
-      "proxifly-socks5": 51,
+      "proxifly-hk": 5,
+      "proxifly-socks5": 43,
       "qiyunip": 1,
-      "thespeedx-socks5": 270
+      "thespeedx-socks5": 235,
+      "zdaye": 1
     },
-    "geo_cached": 281,
-    "last_fetch_at": 1793620654,
-    "last_check_at": 1793620720,
-    "version": 46
+    "geo_cached": 257,
+    "last_fetch_at": 1793620950,
+    "last_check_at": 1793621016,
+    "version": 50
   }
 }
