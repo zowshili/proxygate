@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-11-02T12:03:46Z",
-  "generated_at_cst": "2026-11-02 20:03:46",
+  "generated_at": "2026-11-02T12:08:42Z",
+  "generated_at_cst": "2026-11-02 20:08:42",
   "txt_format": "hostport",
   "counts": {
-    "all": 525,
-    "cn": 13,
-    "hk": 8,
-    "socks5": 522,
-    "https": 3
+    "all": 490,
+    "cn": 15,
+    "hk": 7,
+    "socks5": 488,
+    "https": 2
   },
   "files": {
-    "proxies.txt": 525,
-    "proxies-cn.txt": 13,
-    "proxies-hk.txt": 8,
-    "proxies-socks5.txt": 522,
-    "proxies-https.txt": 3,
-    "clash.yaml": 525,
-    "clash-cn.yaml": 13,
-    "clash-hk.yaml": 8
+    "proxies.txt": 490,
+    "proxies-cn.txt": 15,
+    "proxies-hk.txt": 7,
+    "proxies-socks5.txt": 488,
+    "proxies-https.txt": 2,
+    "clash.yaml": 490,
+    "clash-cn.yaml": 15,
+    "clash-hk.yaml": 7
   },
   "regions": [
     "cn",
@@ -25,34 +25,33 @@
   ],
   "max_alive_latency_ms": 3000,
   "stats": {
-    "total": 8995,
-    "alive": 525,
-    "alive_foreign_reachable": 467,
-    "alive_cn_reachable": 469,
+    "total": 8996,
+    "alive": 490,
+    "alive_foreign_reachable": 435,
+    "alive_cn_reachable": 426,
     "by_protocol": {
-      "https": 3,
-      "socks5": 522
+      "https": 2,
+      "socks5": 488
     },
     "by_region": {
-      "cn": 13,
-      "hk": 8,
-      "other": 504
+      "cn": 15,
+      "hk": 7,
+      "other": 468
     },
     "by_source": {
       "geonode-cn": 1,
-      "geonode-hk": 2,
-      "hideip-socks5": 70,
-      "monosans-socks5": 158,
-      "proxifly-cn": 9,
+      "geonode-hk": 1,
+      "hideip-socks5": 50,
+      "monosans-socks5": 138,
+      "proxifly-cn": 11,
       "proxifly-hk": 5,
-      "proxifly-socks5": 43,
+      "proxifly-socks5": 57,
       "qiyunip": 1,
-      "thespeedx-socks5": 235,
-      "zdaye": 1
+      "thespeedx-socks5": 226
     },
-    "geo_cached": 257,
-    "last_fetch_at": 1793620950,
-    "last_check_at": 1793621016,
-    "version": 50
+    "geo_cached": 296,
+    "last_fetch_at": 1793621245,
+    "last_check_at": 1793621313,
+    "version": 49
   }
 }
