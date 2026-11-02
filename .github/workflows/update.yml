@@ -94,4 +94,10 @@ jobs:
             exit 0
           fi
           git commit -m "chore(data): refresh proxies $(date -u +%Y-%m-%dT%H:%MZ)"
-          git push
+          # 并发运行时远端可能已被另一轮推进，rebase 后重试，不要直接失败
+          for i in 1 2 3; do
+            git pull --rebase --autostash origin main || true
+            if git push; then echo "pushed"; exit 0; fi
+            sleep 5
+          done
+          echo "push failed after 3 attempts"; exit 1
