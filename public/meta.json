@@ -1,23 +1,23 @@
 {
-  "generated_at": "2026-11-02T12:08:42Z",
-  "generated_at_cst": "2026-11-02 20:08:42",
+  "generated_at": "2026-11-02T12:26:07Z",
+  "generated_at_cst": "2026-11-02 20:26:07",
   "txt_format": "hostport",
   "counts": {
-    "all": 490,
-    "cn": 15,
-    "hk": 7,
-    "socks5": 488,
-    "https": 2
+    "all": 463,
+    "cn": 10,
+    "hk": 9,
+    "socks5": 459,
+    "https": 4
   },
   "files": {
-    "proxies.txt": 490,
-    "proxies-cn.txt": 15,
-    "proxies-hk.txt": 7,
-    "proxies-socks5.txt": 488,
-    "proxies-https.txt": 2,
-    "clash.yaml": 490,
-    "clash-cn.yaml": 15,
-    "clash-hk.yaml": 7
+    "proxies.txt": 463,
+    "proxies-cn.txt": 10,
+    "proxies-hk.txt": 9,
+    "proxies-socks5.txt": 459,
+    "proxies-https.txt": 4,
+    "clash.yaml": 463,
+    "clash-cn.yaml": 10,
+    "clash-hk.yaml": 9
   },
   "regions": [
     "cn",
@@ -25,33 +25,33 @@
   ],
   "max_alive_latency_ms": 3000,
   "stats": {
-    "total": 8996,
-    "alive": 490,
-    "alive_foreign_reachable": 435,
-    "alive_cn_reachable": 426,
+    "total": 8604,
+    "alive": 463,
+    "alive_foreign_reachable": 416,
+    "alive_cn_reachable": 395,
     "by_protocol": {
-      "https": 2,
-      "socks5": 488
+      "https": 4,
+      "socks5": 459
     },
     "by_region": {
-      "cn": 15,
-      "hk": 7,
-      "other": 468
+      "cn": 10,
+      "hk": 9,
+      "other": 444
     },
     "by_source": {
-      "geonode-cn": 1,
-      "geonode-hk": 1,
-      "hideip-socks5": 50,
-      "monosans-socks5": 138,
-      "proxifly-cn": 11,
-      "proxifly-hk": 5,
-      "proxifly-socks5": 57,
+      "geonode-hk": 3,
+      "hideip-socks5": 54,
+      "monosans-socks5": 147,
+      "proxifly-cn": 6,
+      "proxifly-hk": 4,
+      "proxifly-socks5": 38,
       "qiyunip": 1,
-      "thespeedx-socks5": 226
+      "thespeedx-socks5": 208,
+      "zdaye": 2
     },
-    "geo_cached": 296,
-    "last_fetch_at": 1793621245,
-    "last_check_at": 1793621313,
-    "version": 49
+    "geo_cached": 265,
+    "last_fetch_at": 1793622294,
+    "last_check_at": 1793622358,
+    "version": 47
   }
 }
