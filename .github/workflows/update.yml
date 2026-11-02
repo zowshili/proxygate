@@ -25,7 +25,7 @@ on:
 
 concurrency:
   group: update-proxies
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -88,16 +88,23 @@ jobs:
           git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public
-          if git diff --cached --quiet; then
-            echo "no change, skip commit"
-            exit 0
-          fi
-          git commit -m "chore(data): refresh proxies $(date -u +%Y-%m-%dT%H:%MZ)"
-          # 并发运行时远端可能已被另一轮推进，rebase 后重试，不要直接失败
+          # public/ 全是生成物，冲突没有意义：每次都以本地最新结果为准，
+          # 把工作树直接叠到刚拉到的远端 HEAD 上再提交，避免 rebase 冲突。
           for i in 1 2 3; do
-            git pull --rebase --autostash origin main || true
-            if git push; then echo "pushed"; exit 0; fi
+            if git fetch -q origin main; then
+              git reset --soft FETCH_HEAD
+              git add public
+              if git diff --cached --quiet; then
+                echo "no change, skip commit"
+                exit 0
+              fi
+              git commit -q -m "chore(data): refresh proxies $(date -u +%Y-%m-%dT%H:%MZ)"
+              if git push -q origin HEAD:main; then
+                echo "pushed"
+                exit 0
+              fi
+            fi
             sleep 5
           done
-          echo "push failed after 3 attempts"; exit 1
+          echo "push failed after 3 attempts"
+          exit 1
