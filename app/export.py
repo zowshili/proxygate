@@ -71,16 +71,20 @@ def export_all(
     outdir: str = "public",
     limit: int = 20000,
     txt_fmt: str = "hostport",
+    scope: str = "full",
 ) -> Dict[str, int]:
-    """生成全部导出文件，返回 {文件名: 条数}。"""
-    all_proxies = store.list_alive(limit=limit)
+    """生成导出文件，返回 {文件名: 条数}。
+
+    scope="full"   全部文件：全局 + 协议 + 区域 + meta.json（GitHub Actions 用）
+    scope="region" 只写 cn/hk 四个文件 + meta-region.json（大陆侧发布用，
+                   避免和 Actions 抢同一批文件）
+    """
+    if scope not in ("full", "region"):
+        raise ValueError("scope must be full or region")
+
     by_region: Dict[str, List[Proxy]] = {
         r: store.list_alive(region=r, limit=limit) for r in cfg.regions
     }
-    by_proto: Dict[str, List[Proxy]] = {
-        p: store.list_alive(protocol=p, limit=limit) for p in ("socks5", "https")
-    }
-
     counts: Dict[str, int] = {}
 
     def _txt(name: str, proxies: List[Proxy]) -> None:
@@ -92,14 +96,19 @@ def export_all(
                build_clash_config(proxies, title="ProxyGate", region=region))
         counts[name] = len(proxies)
 
-    _txt("proxies.txt", all_proxies)
+    all_proxies: List[Proxy] = []
+    if scope == "full":
+        all_proxies = store.list_alive(limit=limit)
+        by_proto: Dict[str, List[Proxy]] = {
+            p: store.list_alive(protocol=p, limit=limit) for p in ("socks5", "https")
+        }
+        _txt("proxies.txt", all_proxies)
+        for proto, proxies in by_proto.items():
+            _txt(f"proxies-{proto}.txt", proxies)
+        _clash("clash.yaml", all_proxies, None)
+
     for region, proxies in by_region.items():
         _txt(f"proxies-{region}.txt", proxies)
-    for proto, proxies in by_proto.items():
-        _txt(f"proxies-{proto}.txt", proxies)
-
-    _clash("clash.yaml", all_proxies, None)
-    for region, proxies in by_region.items():
         _clash(f"clash-{region}.yaml", proxies, region)
 
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -108,19 +117,23 @@ def export_all(
         "generated_at_cst": now.astimezone(
             datetime.timezone(datetime.timedelta(hours=8))
         ).strftime("%Y-%m-%d %H:%M:%S"),
+        "scope": scope,
         "txt_format": txt_fmt,
         "counts": {
             "all": len(all_proxies),
             **{r: len(ps) for r, ps in by_region.items()},
-            **{p: len(ps) for p, ps in by_proto.items()},
         },
         "files": counts,
         "regions": list(cfg.regions),
         "max_alive_latency_ms": cfg.check.max_alive_latency_ms,
-        "stats": store.stats(),
     }
-    _write(os.path.join(outdir, "meta.json"),
+    if scope == "full":
+        meta["counts"].update({p: len(ps) for p, ps in by_proto.items()})
+        meta["stats"] = store.stats()
+    meta_name = "meta.json" if scope == "full" else "meta-region.json"
+    _write(os.path.join(outdir, meta_name),
            json.dumps(meta, ensure_ascii=False, indent=2) + "\n")
 
-    log.info("export: %d alive → %s", len(all_proxies), outdir)
+    log.info("export[%s]: %s → %s", scope,
+             ", ".join(f"{k}={v}" for k, v in counts.items()), outdir)
     return counts

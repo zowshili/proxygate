@@ -1,0 +1,11 @@
+[Unit]
+Description=ProxyGate - publish cn/hk lists every 20 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=20min
+Persistent=true
+Unit=proxygate-publish.service
+
+[Install]
+WantedBy=timers.target

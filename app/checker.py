@@ -164,19 +164,28 @@ async def check_one(
             return proxy, False, -1, cn_ok, fr_ok
         return proxy, alive, lat, cn_ok, fr_ok
 
-    # https 代理：CONNECT 隧道验证（200/302 均算通）
+    # https 代理：先验 CONNECT 隧道（打不了洞的进 Clash 也是废的）
     https_ok, https_lat = await _probe_http(
         proxy, cfg.url_https_check, timeout, cfg.expected_https_status, base_session
     )
-    if not https_ok:
-        return proxy, False, 0, False, False
-    if max_lat and https_lat > max_lat:
-        return proxy, False, -1, False, False
-    # 隧道通了才算活；cn 标签以 baidu http 快速验证（失败不影响 alive）
-    cn_ok, _ = await _probe_http(
-        proxy, cfg.url_cn, timeout, [200, 301, 302], base_session
+    if https_ok:
+        if max_lat and https_lat > max_lat:
+            return proxy, False, -1, False, False
+        cn_ok, _ = await _probe_http(
+            proxy, cfg.url_cn, timeout, [200, 301, 302], base_session
+        )
+        return proxy, True, https_lat, cn_ok, False
+
+    # 回退：大陆出口的 HTTP 代理到不了 gstatic（自身被墙），但对 baidu 的请求能过。
+    # 不放这条回退，ip3366 / 89ip / qiyunip 这类大陆源会整批判死。
+    cn_ok, cn_lat = await _probe_http(
+        proxy, cfg.url_cn, timeout, cfg.expected_cn_status, base_session
     )
-    return proxy, True, https_lat, cn_ok, False
+    if not cn_ok:
+        return proxy, False, 0, False, False
+    if max_lat and cn_lat > max_lat:
+        return proxy, False, -1, False, False
+    return proxy, True, cn_lat, True, False
 
 
 async def run_check_batch(

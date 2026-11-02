@@ -149,6 +149,16 @@ fetch:
       type: "text"
       protocol: "socks5"
 
+    # 全球 http 大列表：数量补充，也是 cn/hk 节点的候选来源
+    - name: "thespeedx-http"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt"
+      type: "text"
+      protocol: "https"
+
+    - name: "openproxylist-https"
+      url: "https://gh-proxy.com/https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt"
+      type: "text"
+      protocol: "https"
 
 check:
   new_interval: 300        # 保活/新代理探活间隔（5 分钟）

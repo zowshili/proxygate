@@ -8,8 +8,9 @@
 
 - 自动采集：多源并行抓取，约 15 分钟一轮，含 GitHub 聚合源与国内站点
 - 异步探活：SOCKS5 走原生隧道、HTTPS 走 CONNECT 隧道验证，自动剔除死代理
-- 高延迟淘汰：超过延迟上限（默认 3 秒）的节点自动判死，不入订阅
-- Clash 订阅：按协议 × 延迟自动分组
+- 高延迟淘汰：超过延迟上限（默认 5 秒）的节点自动判死，不入订阅
+- Clash 订阅：大陆 / 香港各一份，按协议 × 延迟自动分组
+- 纯文本列表：`ip:port` 一行一个，也支持 `protocol://ip:port`
 - JSON API：支持协议 / 标签 / 国家过滤
 - 轻量：Python 3.10+，SQLite 存储
 
@@ -29,9 +30,6 @@ web:
   host: "0.0.0.0"                  # 仅本机用 127.0.0.1
   port: 8080
   token: "换成强随机字符串"          # 必改
-
-clash:
-  gateway_host: "127.0.0.1"        # Clash 在其他设备时改为本机局域网 IP
 ```
 
 生成随机 token：`python3 -c "import secrets; print(secrets.token_urlsafe(24))"`
@@ -55,13 +53,49 @@ curl "http://127.0.0.1:8080/api/stats?token=你的token"
 
 | 端点 | 说明 |
 |---|---|
-| `GET /sub/clash` | Clash YAML 订阅，可带 `type` / `label` / `min_latency` / `limit` 参数 |
-| `GET /sub/raw` | 纯文本列表 |
-| `GET /api/list` | JSON 列表，支持 `type` / `label` / `country` / `min_latency` 过滤 |
+| `GET /sub/clash/cn` | 大陆节点 Clash 订阅（`/sub/clash/hk` 香港，`/sub/clash/all` 全部） |
+| `GET /sub/txt/cn` | 纯文本一行一个代理（`hk` / `all` 同理） |
+| `GET /sub/raw/cn` | 带注释的文本（区域/国家/延迟/标签） |
+| `GET /sub/v2ray/cn` | base64 编码列表 |
+| `GET /api/list/cn` | JSON 列表，支持 `type` / `label` / `country` / `min_latency` 过滤 |
 | `GET /api/stats` | 统计 |
 | `POST /api/update` | 手动触发采集 |
 
-示例：`/sub/clash?token=x&type=socks5&label=cn&min_latency=3000`
+示例：`/sub/clash/hk?token=x&type=socks5&min_latency=5000`
+
+`/sub/txt` 默认输出 `ip:port`，加 `fmt=scheme` 输出 `protocol://ip:port`：
+`/sub/txt/cn?token=x&fmt=scheme&type=socks5`
+
+## GitHub Actions 模式
+
+`.github/workflows/update.yml` 每 30 分钟跑一轮完整流程，把结果提交回 `public/`，公开仓库不消耗 Action 分钟数。
+
+| 文件 | 内容 | 由谁产出 |
+|---|---|---|
+| `public/proxies.txt` | 全部存活，`ip:port` | Actions（境外出口） |
+| `public/proxies-cn.txt` / `proxies-hk.txt` | 大陆 / 香港 | 大陆侧发布（NAS，20 分钟一次） |
+| `public/proxies-socks5.txt` / `proxies-https.txt` | 按协议切分 | Actions |
+| `public/clash-cn.yaml` / `clash-hk.yaml` | 两份独立订阅 | 大陆侧发布 |
+| `public/clash.yaml` | 全部节点 | Actions |
+| `public/meta.json` / `meta-region.json` | 时间与条数 | 各自 |
+
+订阅直接用 raw 地址：
+
+```
+https://raw.githubusercontent.com/zowshili/proxygate/main/public/clash-cn.yaml
+https://raw.githubusercontent.com/zowshili/proxygate/main/public/clash-hk.yaml
+https://raw.githubusercontent.com/zowshili/proxygate/main/public/proxies-cn.txt
+https://raw.githubusercontent.com/zowshili/proxygate/main/public/proxies-hk.txt
+```
+
+大陆/香港两份由国内出口探活，命中率远高于境外 runner，所以单独发布；其余文件仍由 Actions 维护，两边不写同一个文件，不会互相覆盖。
+
+本地复现：
+
+```bash
+python main.py --once -c config.action.yaml --out public        # 全流程
+python scripts/publish_region.py -c config.yaml --out public    # 只导出 cn/hk
+```
 
 ## 代理源
 
@@ -74,7 +108,10 @@ curl "http://127.0.0.1:8080/api/stats?token=你的token"
 | francevpn (GitHub Pages) | HTML | socks5 |
 | geonode API | JSON | https / socks5（country=CN） |
 | proxy.scdn.io API | JSON | https / socks5（CN） |
-| TheSpeedX / monosans | 文本 | socks5 |
+| TheSpeedX / monosans / proxifly / hideip / hookzof | 文本 | socks5 |
+| TheSpeedX http / roosterkid HTTPS | 文本 | https |
+| ip3366 / 89ip | HTML | https（CONNECT 校验） |
+| proxifly country(CN/HK) | 文本 | socks5 / https |
 
 某源持续抓取 0 条时，在 `config.yaml` 的 `fetch.sources` 中注释或替换即可；探活会自动过滤抓到的失效/假冒代理与延迟超过上限的节点。
 

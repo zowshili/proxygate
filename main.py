@@ -3,6 +3,7 @@
 两种运行方式：
     python main.py                    常驻：调度器 + FastAPI，订阅服务
     python main.py --once --out public 单轮：采集→探活→区域判定→导出文件（CI/定时任务）
+    python main.py --export-only --scope region  只从现有库导出 cn/hk（大陆侧发布）
 
 `--once` 跑完就退出，不监听端口，适合 GitHub Actions 这种无状态环境。
 """
@@ -43,7 +44,7 @@ def setup_logging(level: str, logfile: str = "logs/proxypool.log"):
 
 
 async def run_once(cfg, store: Store, outdir: str, fmt: str, limit: int,
-                   max_rounds: int = 12) -> dict:
+                   max_rounds: int = 12, scope: str = "full") -> dict:
     """单轮全流程：采集 → 探活（排空未检队列）→ 区域判定 → 导出。"""
     log = logging.getLogger("once")
     sched = Scheduler(cfg, store)
@@ -67,7 +68,7 @@ async def run_once(cfg, store: Store, outdir: str, fmt: str, limit: int,
     geo = await sched.geo.run()
     log.info("geo: %s", geo)
 
-    counts = await asyncio.to_thread(export_all, cfg, store, outdir, limit, fmt)
+    counts = await asyncio.to_thread(export_all, cfg, store, outdir, limit, fmt, scope)
     log.info("done: %s", counts)
     return counts
 
@@ -80,6 +81,10 @@ def main():
     parser.add_argument("--fmt", default="hostport", choices=["hostport", "scheme"],
                         help="txt 格式：hostport=ip:port，scheme=protocol://ip:port")
     parser.add_argument("--limit", type=int, default=20000, help="单文件最多导出条数")
+    parser.add_argument("--scope", default="full", choices=["full", "region"],
+                        help="full=全部文件；region=只出 cn/hk（大陆侧发布用）")
+    parser.add_argument("--export-only", action="store_true",
+                        help="只导出（读现有数据库），不采集不探活")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -93,8 +98,14 @@ def main():
 
     store = Store(cfg.db)
 
+    if args.export_only:
+        counts = export_all(cfg, store, args.out, args.limit, args.fmt, args.scope)
+        print("EXPORT " + json.dumps(counts, ensure_ascii=False))
+        return
+
     if args.once:
-        counts = asyncio.run(run_once(cfg, store, args.out, args.fmt, args.limit))
+        counts = asyncio.run(run_once(cfg, store, args.out, args.fmt, args.limit,
+                                      scope=args.scope))
         print("EXPORT " + json.dumps(counts, ensure_ascii=False))
         return
 
