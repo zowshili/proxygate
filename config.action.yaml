@@ -1,4 +1,4 @@
-# ProxyGate v2.0.0 — GitHub Actions 专用配置（python main.py --once）
+# ProxyGate v2.1.0 — GitHub Actions 专用配置（python main.py --once）
 # ============================================================
 # 部署前必改：web.token（强随机字符串）
 # 区域：cn=中国大陆，hk=香港。代理归属由 geo 库按 IP 判定，

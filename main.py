@@ -1,4 +1,4 @@
-"""ProxyGate v2.0.0 入口。
+"""ProxyGate v2.1.0 入口。
 
 两种运行方式：
     python main.py                    常驻：调度器 + FastAPI，订阅服务
@@ -27,7 +27,7 @@ from app.scheduler import Scheduler
 from app.store import Store
 from app.web import create_app
 
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 
 
 def setup_logging(level: str, logfile: str = "logs/proxypool.log"):

@@ -86,7 +86,7 @@ def create_app(cfg: AppConfig, store: Store, scheduler, lifespan=None) -> FastAP
     @app.get("/")
     def root():
         return {
-            "app": "proxypool", "version": "2.0.0", "status": "running",
+            "app": "proxypool", "version": "2.1.0", "status": "running",
             "regions": cfg.regions,
             "endpoints": [
                 "/sub/clash/cn", "/sub/clash/hk",
@@ -268,7 +268,7 @@ def create_app(cfg: AppConfig, store: Store, scheduler, lifespan=None) -> FastAP
 
     @app.get("/healthz")
     def healthz():
-        return {"ok": True, "version": "2.0.0", "alive": store.count_alive()}
+        return {"ok": True, "version": "2.1.0", "alive": store.count_alive()}
 
     return app
 
