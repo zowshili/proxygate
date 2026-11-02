@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-11-02T13:59:56Z",
+  "generated_at_cst": "2026-11-02 21:59:56",
+  "scope": "region",
+  "txt_format": "hostport",
+  "counts": {
+    "all": 0,
+    "cn": 18,
+    "hk": 1
+  },
+  "files": {
+    "proxies-cn.txt": 18,
+    "clash-cn.yaml": 18,
+    "proxies-hk.txt": 1,
+    "clash-hk.yaml": 1
+  },
+  "regions": [
+    "cn",
+    "hk"
+  ],
+  "max_alive_latency_ms": 5000
+}
