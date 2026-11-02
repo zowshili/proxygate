@@ -5,12 +5,42 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-- name: 001|s5|HK|154.219.101.12:1080|cn-foreign|387ms
+- name: 001|https|HK|39.109.113.97:4090|cn|120ms
+  type: http
+  server: 39.109.113.97
+  port: 4090
+  udp: false
+- name: 002|https|HK|16.163.88.228:80|cn|1.3s
+  type: http
+  server: 16.163.88.228
+  port: 80
+  udp: false
+- name: 003|https|HK|47.238.60.156:9080|cn|2.1s
+  type: http
+  server: 47.238.60.156
+  port: 9080
+  udp: false
+- name: 004|https|HK|47.238.134.126:1337|cn|2.1s
+  type: http
+  server: 47.238.134.126
+  port: 1337
+  udp: false
+- name: 005|https|HK|176.111.37.216:39811|cn|2.7s
+  type: http
+  server: 176.111.37.216
+  port: 39811
+  udp: false
+- name: 006|s5|HK|154.219.101.12:1080|cn-foreign|3.3s
   type: socks5
   server: 154.219.101.12
   port: 1080
   udp: false
   skip-cert-verify: true
+- name: 007|https|HK|176.111.37.5:39811|cn|3.6s
+  type: http
+  server: 176.111.37.5
+  port: 39811
+  udp: false
 proxy-groups:
 - name: PROXY
   type: select
@@ -26,14 +56,20 @@ proxy-groups:
   interval: 300
   tolerance: 100
   proxies:
-  - 001|s5|HK|154.219.101.12:1080|cn-foreign|387ms
+  - 006|s5|HK|154.219.101.12:1080|cn-foreign|3.3s
 - name: AUTO-CN
   type: url-test
   url: http://www.baidu.com
   interval: 300
   tolerance: 100
   proxies:
-  - 001|s5|HK|154.219.101.12:1080|cn-foreign|387ms
+  - 001|https|HK|39.109.113.97:4090|cn|120ms
+  - 002|https|HK|16.163.88.228:80|cn|1.3s
+  - 003|https|HK|47.238.60.156:9080|cn|2.1s
+  - 004|https|HK|47.238.134.126:1337|cn|2.1s
+  - 005|https|HK|176.111.37.216:39811|cn|2.7s
+  - 006|s5|HK|154.219.101.12:1080|cn-foreign|3.3s
+  - 007|https|HK|176.111.37.5:39811|cn|3.6s
 - name: HTTPS-All
   type: select
   proxies:
@@ -43,11 +79,15 @@ proxy-groups:
 - name: HTTPS-Fast
   type: select
   proxies:
-  - DIRECT
+  - 001|https|HK|39.109.113.97:4090|cn|120ms
 - name: HTTPS-Medium
   type: select
   proxies:
-  - DIRECT
+  - 002|https|HK|16.163.88.228:80|cn|1.3s
+  - 003|https|HK|47.238.60.156:9080|cn|2.1s
+  - 004|https|HK|47.238.134.126:1337|cn|2.1s
+  - 005|https|HK|176.111.37.216:39811|cn|2.7s
+  - 007|https|HK|176.111.37.5:39811|cn|3.6s
 - name: HTTPS-Slow
   type: select
   proxies:
@@ -61,11 +101,11 @@ proxy-groups:
 - name: SOCKS5-Fast
   type: select
   proxies:
-  - 001|s5|HK|154.219.101.12:1080|cn-foreign|387ms
+  - DIRECT
 - name: SOCKS5-Medium
   type: select
   proxies:
-  - DIRECT
+  - 006|s5|HK|154.219.101.12:1080|cn-foreign|3.3s
 - name: SOCKS5-Slow
   type: select
   proxies:

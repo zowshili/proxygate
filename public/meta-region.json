@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-11-02T13:59:56Z",
-  "generated_at_cst": "2026-11-02 21:59:56",
+  "generated_at": "2026-11-02T14:01:43Z",
+  "generated_at_cst": "2026-11-02 22:01:43",
   "scope": "region",
   "txt_format": "hostport",
   "counts": {
     "all": 0,
-    "cn": 18,
-    "hk": 1
+    "cn": 29,
+    "hk": 7
   },
   "files": {
-    "proxies-cn.txt": 18,
-    "clash-cn.yaml": 18,
-    "proxies-hk.txt": 1,
-    "clash-hk.yaml": 1
+    "proxies-cn.txt": 29,
+    "clash-cn.yaml": 29,
+    "proxies-hk.txt": 7,
+    "clash-hk.yaml": 7
   },
   "regions": [
     "cn",
