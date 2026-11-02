@@ -70,14 +70,14 @@ curl "http://127.0.0.1:8080/api/stats?token=你的token"
 
 `.github/workflows/update.yml` 每 30 分钟跑一轮完整流程，把结果提交回 `public/`，公开仓库不消耗 Action 分钟数。
 
-| 文件 | 内容 | 由谁产出 |
-|---|---|---|
-| `public/proxies.txt` | 全部存活，`ip:port` | Actions（境外出口） |
-| `public/proxies-cn.txt` / `proxies-hk.txt` | 大陆 / 香港 | 大陆侧发布（NAS，20 分钟一次） |
-| `public/proxies-socks5.txt` / `proxies-https.txt` | 按协议切分 | Actions |
-| `public/clash-cn.yaml` / `clash-hk.yaml` | 两份独立订阅 | 大陆侧发布 |
-| `public/clash.yaml` | 全部节点 | Actions |
-| `public/meta.json` / `meta-region.json` | 时间与条数 | 各自 |
+| 文件 | 内容 |
+|---|---|
+| `public/proxies.txt` | 全部存活，`ip:port` |
+| `public/proxies-cn.txt` / `proxies-hk.txt` | 大陆 / 香港 |
+| `public/proxies-socks5.txt` / `proxies-https.txt` | 按协议切分 |
+| `public/clash-cn.yaml` / `clash-hk.yaml` | 两份独立订阅 |
+| `public/clash.yaml` | 全部节点 |
+| `public/meta.json` | 生成时间与各文件条数 |
 
 订阅直接用 raw 地址：
 
@@ -88,13 +88,11 @@ https://raw.githubusercontent.com/zowshili/proxygate/main/public/proxies-cn.txt
 https://raw.githubusercontent.com/zowshili/proxygate/main/public/proxies-hk.txt
 ```
 
-大陆/香港两份由国内出口探活，命中率远高于境外 runner，所以单独发布；其余文件仍由 Actions 维护，两边不写同一个文件，不会互相覆盖。
-
 本地复现：
 
 ```bash
 python main.py --once -c config.action.yaml --out public        # 全流程
-python scripts/publish_region.py -c config.yaml --out public    # 只导出 cn/hk
+python scripts/publish_region.py -c config.yaml --out public    # 只导出 cn/hk（读现有库）
 ```
 
 ## 代理源
