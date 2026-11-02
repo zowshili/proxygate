@@ -88,6 +88,18 @@ jobs:
           git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 配了 PAT 就让提交以该账号身份落地：只有真实用户的提交才算活跃，
+          # 这样定时任务不会在 60 天后被 GitHub 自动停用。
+          if [ -n "$PROXYGATE_PAT" ]; then
+            LOGIN=$(curl -sf -H "Authorization: Bearer $PROXYGATE_PAT" \
+              -H "Accept: application/vnd.github+json" https://api.github.com/user \
+              | python -c 'import sys,json;print(json.load(sys.stdin)["login"])' || true)
+            if [ -n "$LOGIN" ]; then
+              git config user.name  "$LOGIN"
+              git config user.email "${LOGIN}@users.noreply.github.com"
+              echo "commit identity: $LOGIN"
+            fi
+          fi
           # public/ 全是生成物，冲突没有意义：每次都以本地最新结果为准，
           # 把工作树直接叠到刚拉到的远端 HEAD 上再提交，避免 rebase 冲突。
           for i in 1 2 3; do
