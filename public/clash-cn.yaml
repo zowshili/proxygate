@@ -5,206 +5,180 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-- name: 001|https|CN|221.178.239.200:7302|cn|417ms
+- name: 001|https|CN|221.178.239.200:7302|cn|413ms
   type: http
   server: 221.178.239.200
   port: 7302
   udp: false
-- name: 002|https|CN|180.167.238.98:7302|cn|477ms
+- name: 002|https|CN|106.15.93.22:8080|cn|430ms
   type: http
-  server: 180.167.238.98
-  port: 7302
+  server: 106.15.93.22
+  port: 8080
   udp: false
-- name: 003|https|浙江省杭州市|47.97.69.38:80|cn|487ms
-  type: http
-  server: 47.97.69.38
-  port: 80
-  udp: false
-- name: 004|https|CN|47.101.41.163:8080|cn|496ms
+- name: 003|https|CN|47.101.41.163:8080|cn|436ms
   type: http
   server: 47.101.41.163
   port: 8080
   udp: false
-- name: 005|https|CN|115.239.234.43:7302|cn|520ms
+- name: 004|https|CN|180.167.238.98:7302|cn|440ms
+  type: http
+  server: 180.167.238.98
+  port: 7302
+  udp: false
+- name: 005|https|浙江省杭州市|121.40.160.78:80|cn|452ms
+  type: http
+  server: 121.40.160.78
+  port: 80
+  udp: false
+- name: 006|https|CN|115.239.234.43:7302|cn|457ms
   type: http
   server: 115.239.234.43
   port: 7302
   udp: false
-- name: 006|https|CN|122.246.4.30:17981|cn|551ms
-  type: http
-  server: 122.246.4.30
-  port: 17981
-  udp: false
-- name: 007|https|CN|153.0.171.163:8085|cn|568ms
-  type: http
-  server: 153.0.171.163
-  port: 8085
-  udp: false
-- name: 008|https|CN|61.158.175.38:9002|cn|573ms
+- name: 007|https|CN|61.158.175.38:9002|cn|524ms
   type: http
   server: 61.158.175.38
   port: 9002
   udp: false
-- name: 009|https|CN|113.204.79.230:9091|cn|654ms
+- name: 008|https|CN|153.0.171.163:8085|cn|524ms
   type: http
-  server: 113.204.79.230
-  port: 9091
+  server: 153.0.171.163
+  port: 8085
   udp: false
-- name: 010|s5|CN|39.170.29.226:10800|cn-foreign|914ms
-  type: socks5
-  server: 39.170.29.226
-  port: 10800
-  udp: false
-  skip-cert-verify: true
-- name: 011|https|CN|36.213.79.159:1080|cn|915ms
-  type: http
-  server: 36.213.79.159
-  port: 1080
-  udp: false
-- name: 012|s5|CN|36.213.79.159:1080|cn|937ms
-  type: socks5
-  server: 36.213.79.159
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 013|s5|CN|58.32.16.138:7000|cn|1.0s
+- name: 009|s5|CN|58.32.16.138:7000|cn-foreign|902ms
   type: socks5
   server: 58.32.16.138
   port: 7000
   udp: false
   skip-cert-verify: true
-- name: 014|https|CN|120.232.115.57:17981|cn|1.0s
+- name: 010|https|CN|120.232.115.57:17981|cn|961ms
   type: http
   server: 120.232.115.57
   port: 17981
   udp: false
-- name: 015|https|CN|120.232.115.170:17981|cn|1.0s
+- name: 011|https|CN|120.232.115.170:17981|cn|988ms
   type: http
   server: 120.232.115.170
   port: 17981
   udp: false
-- name: 016|s5|CN|39.106.201.108:7890|cn|1.1s
-  type: socks5
-  server: 39.106.201.108
-  port: 7890
-  udp: false
-  skip-cert-verify: true
-- name: 017|s5|CN|39.106.170.168:1080|cn-foreign|1.1s
+- name: 012|s5|CN|39.106.170.168:1080|cn-foreign|999ms
   type: socks5
   server: 39.106.170.168
   port: 1080
   udp: false
   skip-cert-verify: true
-- name: 018|s5|CN|180.105.87.52:8989|cn-foreign|1.1s
-  type: socks5
-  server: 180.105.87.52
-  port: 8989
-  udp: false
-  skip-cert-verify: true
-- name: 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
+- name: 013|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
   type: socks5
   server: 39.106.165.196
   port: 1080
   udp: false
   skip-cert-verify: true
-- name: 020|s5|CN|222.211.216.201:7890|cn|1.1s
-  type: socks5
-  server: 222.211.216.201
-  port: 7890
-  udp: false
-  skip-cert-verify: true
-- name: 021|s5|CN|113.249.111.67:1080|cn|1.1s
-  type: socks5
-  server: 113.249.111.67
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 022|s5|CN|58.144.196.192:39105|cn-foreign|1.1s
+- name: 014|s5|CN|58.144.196.192:39105|cn-foreign|1.0s
   type: socks5
   server: 58.144.196.192
   port: 39105
   udp: false
   skip-cert-verify: true
-- name: 023|https|中国北京|101.251.204.174:8080|cn|1.2s
-  type: http
-  server: 101.251.204.174
-  port: 8080
-  udp: false
-- name: 024|https|CN|119.188.131.55:17981|nolabel|1.2s
-  type: http
-  server: 119.188.131.55
-  port: 17981
-  udp: false
-- name: 025|https|CN|27.185.218.213:17981|cn|1.2s
-  type: http
-  server: 27.185.218.213
-  port: 17981
-  udp: false
-- name: 026|s5|CN|49.87.198.200:8989|foreign|1.3s
+- name: 015|s5|CN|222.211.216.201:7890|cn|1.0s
   type: socks5
-  server: 49.87.198.200
-  port: 8989
+  server: 222.211.216.201
+  port: 7890
   udp: false
   skip-cert-verify: true
-- name: 027|https|CN|116.196.150.180:17981|cn|1.4s
+- name: 016|https|CN|116.196.150.180:17981|cn|1.1s
   type: http
   server: 116.196.150.180
   port: 17981
   udp: false
-- name: 028|s5|CN|120.24.22.233:1080|foreign|2.4s
+- name: 017|https|CN|58.33.109.114:2021|cn|1.1s
+  type: http
+  server: 58.33.109.114
+  port: 2021
+  udp: false
+- name: 018|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
   type: socks5
-  server: 120.24.22.233
+  server: 113.249.111.67
   port: 1080
   udp: false
   skip-cert-verify: true
-- name: 029|https|CN|39.129.25.66:8060|cn|2.6s
+- name: 019|https|中国北京|101.251.204.174:8080|cn|1.1s
   type: http
-  server: 39.129.25.66
-  port: 8060
+  server: 101.251.204.174
+  port: 8080
   udp: false
-- name: 030|s5|CN|111.206.4.163:18888|cn-foreign|2.8s
-  type: socks5
-  server: 111.206.4.163
-  port: 18888
-  udp: false
-  skip-cert-verify: true
-- name: 031|https|CN|219.148.171.178:9445|cn|2.9s
-  type: http
-  server: 219.148.171.178
-  port: 9445
-  udp: false
-- name: 032|s5|CN|218.77.50.79:6666|cn|3.0s
-  type: socks5
-  server: 218.77.50.79
-  port: 6666
-  udp: false
-  skip-cert-verify: true
-- name: 033|https|北京市联通|111.206.4.163:18888|cn|3.2s
-  type: http
-  server: 111.206.4.163
-  port: 18888
-  udp: false
-- name: 034|https|CN|36.213.79.159:1081|cn|3.3s
-  type: http
-  server: 36.213.79.159
-  port: 1081
-  udp: false
-- name: 035|s5|CN|122.247.197.214:1081|cn-foreign|3.4s
+- name: 020|s5|CN|122.247.197.214:1081|cn|1.1s
   type: socks5
   server: 122.247.197.214
   port: 1081
   udp: false
   skip-cert-verify: true
-- name: 036|https|CN|112.5.128.78:8060|cn|3.6s
+- name: 021|https|CN|27.185.218.213:17981|cn|1.1s
   type: http
-  server: 112.5.128.78
+  server: 27.185.218.213
+  port: 17981
+  udp: false
+- name: 022|https|CN|219.148.171.178:9445|cn|1.3s
+  type: http
+  server: 219.148.171.178
+  port: 9445
+  udp: false
+- name: 023|https|CN|122.246.4.30:17981|cn|1.4s
+  type: http
+  server: 122.246.4.30
+  port: 17981
+  udp: false
+- name: 024|https|CN|119.188.131.55:17981|cn|1.5s
+  type: http
+  server: 119.188.131.55
+  port: 17981
+  udp: false
+- name: 025|https|CN|111.206.4.163:18888|cn|2.0s
+  type: http
+  server: 111.206.4.163
+  port: 18888
+  udp: false
+- name: 026|s5|CN|111.206.4.163:18888|cn-foreign|2.2s
+  type: socks5
+  server: 111.206.4.163
+  port: 18888
+  udp: false
+  skip-cert-verify: true
+- name: 027|https|CN|36.213.79.159:1081|cn|2.3s
+  type: http
+  server: 36.213.79.159
+  port: 1081
+  udp: false
+- name: 028|https|CN|39.129.25.66:8060|cn|2.6s
+  type: http
+  server: 39.129.25.66
   port: 8060
   udp: false
-- name: 037|https|CN|222.129.142.219:9000|cn|4.2s
+- name: 029|https|CN|36.213.79.159:1080|cn|3.3s
+  type: http
+  server: 36.213.79.159
+  port: 1080
+  udp: false
+- name: 030|https|CN|116.172.234.154:1181|nolabel|3.6s
+  type: http
+  server: 116.172.234.154
+  port: 1181
+  udp: false
+- name: 031|https|CN|222.129.142.219:9000|nolabel|4.3s
   type: http
   server: 222.129.142.219
   port: 9000
   udp: false
+- name: 032|https|中国|120.46.197.14:8083|cn|4.5s
+  type: http
+  server: 120.46.197.14
+  port: 8083
+  udp: false
+- name: 033|s5|CN|39.106.201.108:7890|cn|4.9s
+  type: socks5
+  server: 39.106.201.108
+  port: 7890
+  udp: false
+  skip-cert-verify: true
 proxy-groups:
 - name: PROXY
   type: select
@@ -220,55 +194,49 @@ proxy-groups:
   interval: 300
   tolerance: 100
   proxies:
-  - 010|s5|CN|39.170.29.226:10800|cn-foreign|914ms
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.1s
-  - 018|s5|CN|180.105.87.52:8989|cn-foreign|1.1s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 022|s5|CN|58.144.196.192:39105|cn-foreign|1.1s
-  - 026|s5|CN|49.87.198.200:8989|foreign|1.3s
-  - 028|s5|CN|120.24.22.233:1080|foreign|2.4s
-  - 030|s5|CN|111.206.4.163:18888|cn-foreign|2.8s
-  - 035|s5|CN|122.247.197.214:1081|cn-foreign|3.4s
+  - 009|s5|CN|58.32.16.138:7000|cn-foreign|902ms
+  - 012|s5|CN|39.106.170.168:1080|cn-foreign|999ms
+  - 013|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 014|s5|CN|58.144.196.192:39105|cn-foreign|1.0s
+  - 018|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 026|s5|CN|111.206.4.163:18888|cn-foreign|2.2s
 - name: AUTO-CN
   type: url-test
   url: http://www.baidu.com
   interval: 300
   tolerance: 100
   proxies:
-  - 001|https|CN|221.178.239.200:7302|cn|417ms
-  - 002|https|CN|180.167.238.98:7302|cn|477ms
-  - 003|https|浙江省杭州市|47.97.69.38:80|cn|487ms
-  - 004|https|CN|47.101.41.163:8080|cn|496ms
-  - 005|https|CN|115.239.234.43:7302|cn|520ms
-  - 006|https|CN|122.246.4.30:17981|cn|551ms
-  - 007|https|CN|153.0.171.163:8085|cn|568ms
-  - 008|https|CN|61.158.175.38:9002|cn|573ms
-  - 009|https|CN|113.204.79.230:9091|cn|654ms
-  - 010|s5|CN|39.170.29.226:10800|cn-foreign|914ms
-  - 011|https|CN|36.213.79.159:1080|cn|915ms
-  - 012|s5|CN|36.213.79.159:1080|cn|937ms
-  - 013|s5|CN|58.32.16.138:7000|cn|1.0s
-  - 014|https|CN|120.232.115.57:17981|cn|1.0s
-  - 015|https|CN|120.232.115.170:17981|cn|1.0s
-  - 016|s5|CN|39.106.201.108:7890|cn|1.1s
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.1s
-  - 018|s5|CN|180.105.87.52:8989|cn-foreign|1.1s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 020|s5|CN|222.211.216.201:7890|cn|1.1s
-  - 021|s5|CN|113.249.111.67:1080|cn|1.1s
-  - 022|s5|CN|58.144.196.192:39105|cn-foreign|1.1s
-  - 023|https|中国北京|101.251.204.174:8080|cn|1.2s
-  - 025|https|CN|27.185.218.213:17981|cn|1.2s
-  - 027|https|CN|116.196.150.180:17981|cn|1.4s
-  - 029|https|CN|39.129.25.66:8060|cn|2.6s
-  - 030|s5|CN|111.206.4.163:18888|cn-foreign|2.8s
-  - 031|https|CN|219.148.171.178:9445|cn|2.9s
-  - 032|s5|CN|218.77.50.79:6666|cn|3.0s
-  - 033|https|北京市联通|111.206.4.163:18888|cn|3.2s
-  - 034|https|CN|36.213.79.159:1081|cn|3.3s
-  - 035|s5|CN|122.247.197.214:1081|cn-foreign|3.4s
-  - 036|https|CN|112.5.128.78:8060|cn|3.6s
-  - 037|https|CN|222.129.142.219:9000|cn|4.2s
+  - 001|https|CN|221.178.239.200:7302|cn|413ms
+  - 002|https|CN|106.15.93.22:8080|cn|430ms
+  - 003|https|CN|47.101.41.163:8080|cn|436ms
+  - 004|https|CN|180.167.238.98:7302|cn|440ms
+  - 005|https|浙江省杭州市|121.40.160.78:80|cn|452ms
+  - 006|https|CN|115.239.234.43:7302|cn|457ms
+  - 007|https|CN|61.158.175.38:9002|cn|524ms
+  - 008|https|CN|153.0.171.163:8085|cn|524ms
+  - 009|s5|CN|58.32.16.138:7000|cn-foreign|902ms
+  - 010|https|CN|120.232.115.57:17981|cn|961ms
+  - 011|https|CN|120.232.115.170:17981|cn|988ms
+  - 012|s5|CN|39.106.170.168:1080|cn-foreign|999ms
+  - 013|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 014|s5|CN|58.144.196.192:39105|cn-foreign|1.0s
+  - 015|s5|CN|222.211.216.201:7890|cn|1.0s
+  - 016|https|CN|116.196.150.180:17981|cn|1.1s
+  - 017|https|CN|58.33.109.114:2021|cn|1.1s
+  - 018|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 019|https|中国北京|101.251.204.174:8080|cn|1.1s
+  - 020|s5|CN|122.247.197.214:1081|cn|1.1s
+  - 021|https|CN|27.185.218.213:17981|cn|1.1s
+  - 022|https|CN|219.148.171.178:9445|cn|1.3s
+  - 023|https|CN|122.246.4.30:17981|cn|1.4s
+  - 024|https|CN|119.188.131.55:17981|cn|1.5s
+  - 025|https|CN|111.206.4.163:18888|cn|2.0s
+  - 026|s5|CN|111.206.4.163:18888|cn-foreign|2.2s
+  - 027|https|CN|36.213.79.159:1081|cn|2.3s
+  - 028|https|CN|39.129.25.66:8060|cn|2.6s
+  - 029|https|CN|36.213.79.159:1080|cn|3.3s
+  - 032|https|中国|120.46.197.14:8083|cn|4.5s
+  - 033|s5|CN|39.106.201.108:7890|cn|4.9s
 - name: HTTPS-All
   type: select
   proxies:
@@ -278,34 +246,36 @@ proxy-groups:
 - name: HTTPS-Fast
   type: select
   proxies:
-  - 001|https|CN|221.178.239.200:7302|cn|417ms
-  - 002|https|CN|180.167.238.98:7302|cn|477ms
-  - 003|https|浙江省杭州市|47.97.69.38:80|cn|487ms
-  - 004|https|CN|47.101.41.163:8080|cn|496ms
-  - 005|https|CN|115.239.234.43:7302|cn|520ms
-  - 006|https|CN|122.246.4.30:17981|cn|551ms
-  - 007|https|CN|153.0.171.163:8085|cn|568ms
-  - 008|https|CN|61.158.175.38:9002|cn|573ms
-  - 009|https|CN|113.204.79.230:9091|cn|654ms
-  - 011|https|CN|36.213.79.159:1080|cn|915ms
+  - 001|https|CN|221.178.239.200:7302|cn|413ms
+  - 002|https|CN|106.15.93.22:8080|cn|430ms
+  - 003|https|CN|47.101.41.163:8080|cn|436ms
+  - 004|https|CN|180.167.238.98:7302|cn|440ms
+  - 005|https|浙江省杭州市|121.40.160.78:80|cn|452ms
+  - 006|https|CN|115.239.234.43:7302|cn|457ms
+  - 007|https|CN|61.158.175.38:9002|cn|524ms
+  - 008|https|CN|153.0.171.163:8085|cn|524ms
+  - 010|https|CN|120.232.115.57:17981|cn|961ms
+  - 011|https|CN|120.232.115.170:17981|cn|988ms
 - name: HTTPS-Medium
   type: select
   proxies:
-  - 014|https|CN|120.232.115.57:17981|cn|1.0s
-  - 015|https|CN|120.232.115.170:17981|cn|1.0s
-  - 023|https|中国北京|101.251.204.174:8080|cn|1.2s
-  - 024|https|CN|119.188.131.55:17981|nolabel|1.2s
-  - 025|https|CN|27.185.218.213:17981|cn|1.2s
-  - 027|https|CN|116.196.150.180:17981|cn|1.4s
-  - 029|https|CN|39.129.25.66:8060|cn|2.6s
-  - 031|https|CN|219.148.171.178:9445|cn|2.9s
-  - 033|https|北京市联通|111.206.4.163:18888|cn|3.2s
-  - 034|https|CN|36.213.79.159:1081|cn|3.3s
-  - 036|https|CN|112.5.128.78:8060|cn|3.6s
+  - 016|https|CN|116.196.150.180:17981|cn|1.1s
+  - 017|https|CN|58.33.109.114:2021|cn|1.1s
+  - 019|https|中国北京|101.251.204.174:8080|cn|1.1s
+  - 021|https|CN|27.185.218.213:17981|cn|1.1s
+  - 022|https|CN|219.148.171.178:9445|cn|1.3s
+  - 023|https|CN|122.246.4.30:17981|cn|1.4s
+  - 024|https|CN|119.188.131.55:17981|cn|1.5s
+  - 025|https|CN|111.206.4.163:18888|cn|2.0s
+  - 027|https|CN|36.213.79.159:1081|cn|2.3s
+  - 028|https|CN|39.129.25.66:8060|cn|2.6s
+  - 029|https|CN|36.213.79.159:1080|cn|3.3s
+  - 030|https|CN|116.172.234.154:1181|nolabel|3.6s
 - name: HTTPS-Slow
   type: select
   proxies:
-  - 037|https|CN|222.129.142.219:9000|cn|4.2s
+  - 031|https|CN|222.129.142.219:9000|nolabel|4.3s
+  - 032|https|中国|120.46.197.14:8083|cn|4.5s
 - name: SOCKS5-All
   type: select
   proxies:
@@ -315,28 +285,21 @@ proxy-groups:
 - name: SOCKS5-Fast
   type: select
   proxies:
-  - 010|s5|CN|39.170.29.226:10800|cn-foreign|914ms
-  - 012|s5|CN|36.213.79.159:1080|cn|937ms
+  - 009|s5|CN|58.32.16.138:7000|cn-foreign|902ms
+  - 012|s5|CN|39.106.170.168:1080|cn-foreign|999ms
 - name: SOCKS5-Medium
   type: select
   proxies:
-  - 013|s5|CN|58.32.16.138:7000|cn|1.0s
-  - 016|s5|CN|39.106.201.108:7890|cn|1.1s
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.1s
-  - 018|s5|CN|180.105.87.52:8989|cn-foreign|1.1s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 020|s5|CN|222.211.216.201:7890|cn|1.1s
-  - 021|s5|CN|113.249.111.67:1080|cn|1.1s
-  - 022|s5|CN|58.144.196.192:39105|cn-foreign|1.1s
-  - 026|s5|CN|49.87.198.200:8989|foreign|1.3s
-  - 028|s5|CN|120.24.22.233:1080|foreign|2.4s
-  - 030|s5|CN|111.206.4.163:18888|cn-foreign|2.8s
-  - 032|s5|CN|218.77.50.79:6666|cn|3.0s
-  - 035|s5|CN|122.247.197.214:1081|cn-foreign|3.4s
+  - 013|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 014|s5|CN|58.144.196.192:39105|cn-foreign|1.0s
+  - 015|s5|CN|222.211.216.201:7890|cn|1.0s
+  - 018|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 020|s5|CN|122.247.197.214:1081|cn|1.1s
+  - 026|s5|CN|111.206.4.163:18888|cn-foreign|2.2s
 - name: SOCKS5-Slow
   type: select
   proxies:
-  - DIRECT
+  - 033|s5|CN|39.106.201.108:7890|cn|4.9s
 rules:
 - DOMAIN-SUFFIX,google.com,AUTO-Foreign
 - DOMAIN-SUFFIX,gstatic.com,AUTO-Foreign
