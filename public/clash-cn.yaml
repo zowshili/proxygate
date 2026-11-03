@@ -5,206 +5,206 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-- name: 001|https|CN|221.178.239.200:7302|cn|394ms
+- name: 001|https|CN|221.178.239.200:7302|cn|364ms
   type: http
   server: 221.178.239.200
   port: 7302
   udp: false
-- name: 002|https|CN|180.167.238.98:7302|cn|458ms
-  type: http
-  server: 180.167.238.98
-  port: 7302
-  udp: false
-- name: 003|https|广东省肇庆市|116.62.35.65:80|cn|464ms
-  type: http
-  server: 116.62.35.65
-  port: 80
-  udp: false
-- name: 004|https|CN|47.101.153.1:80|cn|466ms
-  type: http
-  server: 47.101.153.1
-  port: 80
-  udp: false
-- name: 005|https|CN|115.239.234.43:7302|cn|468ms
-  type: http
-  server: 115.239.234.43
-  port: 7302
-  udp: false
-- name: 006|https|CN|106.15.93.22:8080|cn|472ms
+- name: 002|https|CN|106.15.93.22:8080|cn|418ms
   type: http
   server: 106.15.93.22
   port: 8080
   udp: false
-- name: 007|https|浙江省杭州市|47.98.106.240:80|cn|478ms
+- name: 003|https|CN|47.101.153.1:80|cn|423ms
   type: http
-  server: 47.98.106.240
+  server: 47.101.153.1
   port: 80
   udp: false
-- name: 008|https|浙江省杭州市|47.99.139.203:80|cn|479ms
+- name: 004|https|浙江省杭州市|121.43.234.89:80|cn|426ms
   type: http
-  server: 47.99.139.203
+  server: 121.43.234.89
   port: 80
   udp: false
-- name: 009|https|CN|47.101.41.163:8080|cn|480ms
+- name: 005|https|CN|47.101.41.163:8080|cn|427ms
   type: http
   server: 47.101.41.163
   port: 8080
   udp: false
-- name: 010|https|CN|39.129.25.66:8060|cn|600ms
+- name: 006|https|CN|180.167.238.98:7302|cn|429ms
   type: http
-  server: 39.129.25.66
-  port: 8060
+  server: 180.167.238.98
+  port: 7302
   udp: false
-- name: 011|https|CN|113.204.79.230:9091|cn|625ms
+- name: 007|https|CN|101.132.222.120:80|cn|440ms
   type: http
-  server: 113.204.79.230
-  port: 9091
+  server: 101.132.222.120
+  port: 80
   udp: false
-- name: 012|https|CN|36.213.79.159:1081|cn|686ms
+- name: 008|https|CN|103.213.97.78:80|cn|452ms
   type: http
-  server: 36.213.79.159
-  port: 1081
+  server: 103.213.97.78
+  port: 80
   udp: false
-- name: 013|https|CN|61.158.175.38:9002|cn|891ms
+- name: 009|https|CN|115.239.234.43:7302|cn|462ms
+  type: http
+  server: 115.239.234.43
+  port: 7302
+  udp: false
+- name: 010|https|CN|61.158.175.38:9002|cn|506ms
   type: http
   server: 61.158.175.38
   port: 9002
   udp: false
-- name: 014|s5|CN|47.103.30.64:1080|cn-foreign|985ms
-  type: socks5
-  server: 47.103.30.64
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 015|https|CN|120.232.115.170:17981|cn|991ms
-  type: http
-  server: 120.232.115.170
-  port: 17981
-  udp: false
-- name: 016|https|CN|120.232.115.57:17981|cn|993ms
-  type: http
-  server: 120.232.115.57
-  port: 17981
-  udp: false
-- name: 017|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
-  type: socks5
-  server: 39.106.170.168
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 018|https|浙江省宁波市电信|122.246.4.30:17981|cn|1.1s
-  type: http
-  server: 122.246.4.30
-  port: 17981
-  udp: false
-- name: 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  type: socks5
-  server: 39.106.165.196
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 020|https|中国北京|101.251.204.174:8080|cn|1.1s
-  type: http
-  server: 101.251.204.174
-  port: 8080
-  udp: false
-- name: 021|https|CN|116.196.150.180:17981|nolabel|1.1s
-  type: http
-  server: 116.196.150.180
-  port: 17981
-  udp: false
-- name: 022|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
-  type: socks5
-  server: 113.249.111.67
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 023|s5|CN|222.211.216.201:7890|cn|1.2s
-  type: socks5
-  server: 222.211.216.201
-  port: 7890
-  udp: false
-  skip-cert-verify: true
-- name: 024|https|CN|36.213.79.159:1080|cn|1.3s
-  type: http
-  server: 36.213.79.159
-  port: 1080
-  udp: false
-- name: 025|https|上海市北京首都在线科|139.159.97.82:10900|cn|1.4s
-  type: http
-  server: 139.159.97.82
-  port: 10900
-  udp: false
-- name: 026|s5|CN|116.172.234.154:1181|foreign|1.4s
-  type: socks5
-  server: 116.172.234.154
-  port: 1181
-  udp: false
-  skip-cert-verify: true
-- name: 027|https|CN|116.172.234.154:1181|cn|1.4s
-  type: http
-  server: 116.172.234.154
-  port: 1181
-  udp: false
-- name: 028|https|CN|27.185.218.213:17981|cn|1.5s
-  type: http
-  server: 27.185.218.213
-  port: 17981
-  udp: false
-- name: 029|https|CN|219.148.171.178:9445|cn|1.7s
-  type: http
-  server: 219.148.171.178
-  port: 9445
-  udp: false
-- name: 030|s5|CN|111.206.4.163:18888|cn|1.8s
-  type: socks5
-  server: 111.206.4.163
-  port: 18888
-  udp: false
-  skip-cert-verify: true
-- name: 031|https|北京市联通|114.252.238.67:3128|cn|1.9s
-  type: http
-  server: 114.252.238.67
-  port: 3128
-  udp: false
-- name: 032|https|CN|153.0.171.163:8085|cn|2.4s
+- name: 011|https|CN|153.0.171.163:8085|cn|528ms
   type: http
   server: 153.0.171.163
   port: 8085
   udp: false
-- name: 033|https|CN|111.206.4.163:18888|cn|2.6s
+- name: 012|https|CN|120.55.240.71:8647|cn|550ms
   type: http
-  server: 111.206.4.163
-  port: 18888
+  server: 120.55.240.71
+  port: 8647
   udp: false
-- name: 034|s5|CN|58.144.196.192:39105|cn-foreign|2.6s
+- name: 013|https|CN|113.204.79.230:9091|cn|645ms
+  type: http
+  server: 113.204.79.230
+  port: 9091
+  udp: false
+- name: 014|https|CN|118.145.144.62:8080|cn|680ms
+  type: http
+  server: 118.145.144.62
+  port: 8080
+  udp: false
+- name: 015|s5|CN|58.32.16.138:7000|cn|901ms
   type: socks5
-  server: 58.144.196.192
-  port: 39105
+  server: 58.32.16.138
+  port: 7000
   udp: false
   skip-cert-verify: true
-- name: 035|s5|CN|120.24.22.233:1080|cn|2.9s
-  type: socks5
-  server: 120.24.22.233
-  port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 036|s5|CN|134.175.238.113:1080|cn-foreign|3.3s
+- name: 016|s5|CN|134.175.238.113:1080|cn|909ms
   type: socks5
   server: 134.175.238.113
   port: 1080
   udp: false
   skip-cert-verify: true
-- name: 037|https|吉林省长春市|116.63.130.30:31328|cn|4.5s
+- name: 017|https|CN|120.232.115.170:17981|cn|942ms
   type: http
-  server: 116.63.130.30
-  port: 31328
+  server: 120.232.115.170
+  port: 17981
   udp: false
-- name: 038|https|CN|218.207.164.174:7890|cn|4.6s
+- name: 018|s5|CN|222.211.216.201:7890|cn|970ms
+  type: socks5
+  server: 222.211.216.201
+  port: 7890
+  udp: false
+  skip-cert-verify: true
+- name: 019|https|CN|120.232.115.57:17981|cn|996ms
+  type: http
+  server: 120.232.115.57
+  port: 17981
+  udp: false
+- name: 020|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  type: socks5
+  server: 39.106.165.196
+  port: 1080
+  udp: false
+  skip-cert-verify: true
+- name: 021|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
+  type: socks5
+  server: 39.106.170.168
+  port: 1080
+  udp: false
+  skip-cert-verify: true
+- name: 022|https|中国北京|101.251.204.174:8080|cn|1.1s
+  type: http
+  server: 101.251.204.174
+  port: 8080
+  udp: false
+- name: 023|https|CN|116.196.150.180:17981|nolabel|1.1s
+  type: http
+  server: 116.196.150.180
+  port: 17981
+  udp: false
+- name: 024|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  type: socks5
+  server: 113.249.111.67
+  port: 1080
+  udp: false
+  skip-cert-verify: true
+- name: 025|https|CN|122.246.4.30:17981|cn|1.1s
+  type: http
+  server: 122.246.4.30
+  port: 17981
+  udp: false
+- name: 026|https|CN|27.185.218.213:17981|cn|1.1s
+  type: http
+  server: 27.185.218.213
+  port: 17981
+  udp: false
+- name: 027|s5|CN|111.206.4.163:18888|cn-foreign|1.2s
+  type: socks5
+  server: 111.206.4.163
+  port: 18888
+  udp: false
+  skip-cert-verify: true
+- name: 028|s5|CN|175.155.178.210:1080|foreign|2.3s
+  type: socks5
+  server: 175.155.178.210
+  port: 1080
+  udp: false
+  skip-cert-verify: true
+- name: 029|https|CN|202.38.111.75:80|cn|2.4s
+  type: http
+  server: 202.38.111.75
+  port: 80
+  udp: false
+- name: 030|https|内蒙古呼和浩特市电信|219.148.171.178:9445|cn|2.6s
+  type: http
+  server: 219.148.171.178
+  port: 9445
+  udp: false
+- name: 031|https|CN|36.213.79.159:1081|cn|2.6s
+  type: http
+  server: 36.213.79.159
+  port: 1081
+  udp: false
+- name: 032|https|CN|111.206.4.163:18888|cn|2.7s
+  type: http
+  server: 111.206.4.163
+  port: 18888
+  udp: false
+- name: 033|https|CN|221.179.242.6:11111|cn|2.7s
+  type: http
+  server: 221.179.242.6
+  port: 11111
+  udp: false
+- name: 034|https|CN|218.207.164.174:7890|cn|3.6s
   type: http
   server: 218.207.164.174
   port: 7890
   udp: false
+- name: 035|https|CN|103.85.173.82:8088|cn|3.7s
+  type: http
+  server: 103.85.173.82
+  port: 8088
+  udp: false
+- name: 036|s5|CN|180.165.20.217:1081|foreign|4.3s
+  type: socks5
+  server: 180.165.20.217
+  port: 1081
+  udp: false
+  skip-cert-verify: true
+- name: 037|https|浙江省杭州市|47.113.221.120:1080|cn|4.5s
+  type: http
+  server: 47.113.221.120
+  port: 1080
+  udp: false
+- name: 038|s5|CN|39.106.201.108:7890|cn|4.6s
+  type: socks5
+  server: 39.106.201.108
+  port: 7890
+  udp: false
+  skip-cert-verify: true
 proxy-groups:
 - name: PROXY
   type: select
@@ -220,55 +220,53 @@ proxy-groups:
   interval: 300
   tolerance: 100
   proxies:
-  - 014|s5|CN|47.103.30.64:1080|cn-foreign|985ms
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 022|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
-  - 026|s5|CN|116.172.234.154:1181|foreign|1.4s
-  - 034|s5|CN|58.144.196.192:39105|cn-foreign|2.6s
-  - 036|s5|CN|134.175.238.113:1080|cn-foreign|3.3s
+  - 020|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 021|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
+  - 024|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 027|s5|CN|111.206.4.163:18888|cn-foreign|1.2s
+  - 028|s5|CN|175.155.178.210:1080|foreign|2.3s
+  - 036|s5|CN|180.165.20.217:1081|foreign|4.3s
 - name: AUTO-CN
   type: url-test
   url: http://www.baidu.com
   interval: 300
   tolerance: 100
   proxies:
-  - 001|https|CN|221.178.239.200:7302|cn|394ms
-  - 002|https|CN|180.167.238.98:7302|cn|458ms
-  - 003|https|广东省肇庆市|116.62.35.65:80|cn|464ms
-  - 004|https|CN|47.101.153.1:80|cn|466ms
-  - 005|https|CN|115.239.234.43:7302|cn|468ms
-  - 006|https|CN|106.15.93.22:8080|cn|472ms
-  - 007|https|浙江省杭州市|47.98.106.240:80|cn|478ms
-  - 008|https|浙江省杭州市|47.99.139.203:80|cn|479ms
-  - 009|https|CN|47.101.41.163:8080|cn|480ms
-  - 010|https|CN|39.129.25.66:8060|cn|600ms
-  - 011|https|CN|113.204.79.230:9091|cn|625ms
-  - 012|https|CN|36.213.79.159:1081|cn|686ms
-  - 013|https|CN|61.158.175.38:9002|cn|891ms
-  - 014|s5|CN|47.103.30.64:1080|cn-foreign|985ms
-  - 015|https|CN|120.232.115.170:17981|cn|991ms
-  - 016|https|CN|120.232.115.57:17981|cn|993ms
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
-  - 018|https|浙江省宁波市电信|122.246.4.30:17981|cn|1.1s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 020|https|中国北京|101.251.204.174:8080|cn|1.1s
-  - 022|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
-  - 023|s5|CN|222.211.216.201:7890|cn|1.2s
-  - 024|https|CN|36.213.79.159:1080|cn|1.3s
-  - 025|https|上海市北京首都在线科|139.159.97.82:10900|cn|1.4s
-  - 027|https|CN|116.172.234.154:1181|cn|1.4s
-  - 028|https|CN|27.185.218.213:17981|cn|1.5s
-  - 029|https|CN|219.148.171.178:9445|cn|1.7s
-  - 030|s5|CN|111.206.4.163:18888|cn|1.8s
-  - 031|https|北京市联通|114.252.238.67:3128|cn|1.9s
-  - 032|https|CN|153.0.171.163:8085|cn|2.4s
-  - 033|https|CN|111.206.4.163:18888|cn|2.6s
-  - 034|s5|CN|58.144.196.192:39105|cn-foreign|2.6s
-  - 035|s5|CN|120.24.22.233:1080|cn|2.9s
-  - 036|s5|CN|134.175.238.113:1080|cn-foreign|3.3s
-  - 037|https|吉林省长春市|116.63.130.30:31328|cn|4.5s
-  - 038|https|CN|218.207.164.174:7890|cn|4.6s
+  - 001|https|CN|221.178.239.200:7302|cn|364ms
+  - 002|https|CN|106.15.93.22:8080|cn|418ms
+  - 003|https|CN|47.101.153.1:80|cn|423ms
+  - 004|https|浙江省杭州市|121.43.234.89:80|cn|426ms
+  - 005|https|CN|47.101.41.163:8080|cn|427ms
+  - 006|https|CN|180.167.238.98:7302|cn|429ms
+  - 007|https|CN|101.132.222.120:80|cn|440ms
+  - 008|https|CN|103.213.97.78:80|cn|452ms
+  - 009|https|CN|115.239.234.43:7302|cn|462ms
+  - 010|https|CN|61.158.175.38:9002|cn|506ms
+  - 011|https|CN|153.0.171.163:8085|cn|528ms
+  - 012|https|CN|120.55.240.71:8647|cn|550ms
+  - 013|https|CN|113.204.79.230:9091|cn|645ms
+  - 014|https|CN|118.145.144.62:8080|cn|680ms
+  - 015|s5|CN|58.32.16.138:7000|cn|901ms
+  - 016|s5|CN|134.175.238.113:1080|cn|909ms
+  - 017|https|CN|120.232.115.170:17981|cn|942ms
+  - 018|s5|CN|222.211.216.201:7890|cn|970ms
+  - 019|https|CN|120.232.115.57:17981|cn|996ms
+  - 020|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 021|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
+  - 022|https|中国北京|101.251.204.174:8080|cn|1.1s
+  - 024|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 025|https|CN|122.246.4.30:17981|cn|1.1s
+  - 026|https|CN|27.185.218.213:17981|cn|1.1s
+  - 027|s5|CN|111.206.4.163:18888|cn-foreign|1.2s
+  - 029|https|CN|202.38.111.75:80|cn|2.4s
+  - 030|https|内蒙古呼和浩特市电信|219.148.171.178:9445|cn|2.6s
+  - 031|https|CN|36.213.79.159:1081|cn|2.6s
+  - 032|https|CN|111.206.4.163:18888|cn|2.7s
+  - 033|https|CN|221.179.242.6:11111|cn|2.7s
+  - 034|https|CN|218.207.164.174:7890|cn|3.6s
+  - 035|https|CN|103.85.173.82:8088|cn|3.7s
+  - 037|https|浙江省杭州市|47.113.221.120:1080|cn|4.5s
+  - 038|s5|CN|39.106.201.108:7890|cn|4.6s
 - name: HTTPS-All
   type: select
   proxies:
@@ -278,40 +276,40 @@ proxy-groups:
 - name: HTTPS-Fast
   type: select
   proxies:
-  - 001|https|CN|221.178.239.200:7302|cn|394ms
-  - 002|https|CN|180.167.238.98:7302|cn|458ms
-  - 003|https|广东省肇庆市|116.62.35.65:80|cn|464ms
-  - 004|https|CN|47.101.153.1:80|cn|466ms
-  - 005|https|CN|115.239.234.43:7302|cn|468ms
-  - 006|https|CN|106.15.93.22:8080|cn|472ms
-  - 007|https|浙江省杭州市|47.98.106.240:80|cn|478ms
-  - 008|https|浙江省杭州市|47.99.139.203:80|cn|479ms
-  - 009|https|CN|47.101.41.163:8080|cn|480ms
-  - 010|https|CN|39.129.25.66:8060|cn|600ms
-  - 011|https|CN|113.204.79.230:9091|cn|625ms
-  - 012|https|CN|36.213.79.159:1081|cn|686ms
-  - 013|https|CN|61.158.175.38:9002|cn|891ms
-  - 015|https|CN|120.232.115.170:17981|cn|991ms
-  - 016|https|CN|120.232.115.57:17981|cn|993ms
+  - 001|https|CN|221.178.239.200:7302|cn|364ms
+  - 002|https|CN|106.15.93.22:8080|cn|418ms
+  - 003|https|CN|47.101.153.1:80|cn|423ms
+  - 004|https|浙江省杭州市|121.43.234.89:80|cn|426ms
+  - 005|https|CN|47.101.41.163:8080|cn|427ms
+  - 006|https|CN|180.167.238.98:7302|cn|429ms
+  - 007|https|CN|101.132.222.120:80|cn|440ms
+  - 008|https|CN|103.213.97.78:80|cn|452ms
+  - 009|https|CN|115.239.234.43:7302|cn|462ms
+  - 010|https|CN|61.158.175.38:9002|cn|506ms
+  - 011|https|CN|153.0.171.163:8085|cn|528ms
+  - 012|https|CN|120.55.240.71:8647|cn|550ms
+  - 013|https|CN|113.204.79.230:9091|cn|645ms
+  - 014|https|CN|118.145.144.62:8080|cn|680ms
+  - 017|https|CN|120.232.115.170:17981|cn|942ms
+  - 019|https|CN|120.232.115.57:17981|cn|996ms
 - name: HTTPS-Medium
   type: select
   proxies:
-  - 018|https|浙江省宁波市电信|122.246.4.30:17981|cn|1.1s
-  - 020|https|中国北京|101.251.204.174:8080|cn|1.1s
-  - 021|https|CN|116.196.150.180:17981|nolabel|1.1s
-  - 024|https|CN|36.213.79.159:1080|cn|1.3s
-  - 025|https|上海市北京首都在线科|139.159.97.82:10900|cn|1.4s
-  - 027|https|CN|116.172.234.154:1181|cn|1.4s
-  - 028|https|CN|27.185.218.213:17981|cn|1.5s
-  - 029|https|CN|219.148.171.178:9445|cn|1.7s
-  - 031|https|北京市联通|114.252.238.67:3128|cn|1.9s
-  - 032|https|CN|153.0.171.163:8085|cn|2.4s
-  - 033|https|CN|111.206.4.163:18888|cn|2.6s
+  - 022|https|中国北京|101.251.204.174:8080|cn|1.1s
+  - 023|https|CN|116.196.150.180:17981|nolabel|1.1s
+  - 025|https|CN|122.246.4.30:17981|cn|1.1s
+  - 026|https|CN|27.185.218.213:17981|cn|1.1s
+  - 029|https|CN|202.38.111.75:80|cn|2.4s
+  - 030|https|内蒙古呼和浩特市电信|219.148.171.178:9445|cn|2.6s
+  - 031|https|CN|36.213.79.159:1081|cn|2.6s
+  - 032|https|CN|111.206.4.163:18888|cn|2.7s
+  - 033|https|CN|221.179.242.6:11111|cn|2.7s
+  - 034|https|CN|218.207.164.174:7890|cn|3.6s
+  - 035|https|CN|103.85.173.82:8088|cn|3.7s
 - name: HTTPS-Slow
   type: select
   proxies:
-  - 037|https|吉林省长春市|116.63.130.30:31328|cn|4.5s
-  - 038|https|CN|218.207.164.174:7890|cn|4.6s
+  - 037|https|浙江省杭州市|47.113.221.120:1080|cn|4.5s
 - name: SOCKS5-All
   type: select
   proxies:
@@ -321,23 +319,22 @@ proxy-groups:
 - name: SOCKS5-Fast
   type: select
   proxies:
-  - 014|s5|CN|47.103.30.64:1080|cn-foreign|985ms
+  - 015|s5|CN|58.32.16.138:7000|cn|901ms
+  - 016|s5|CN|134.175.238.113:1080|cn|909ms
+  - 018|s5|CN|222.211.216.201:7890|cn|970ms
 - name: SOCKS5-Medium
   type: select
   proxies:
-  - 017|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
-  - 019|s5|CN|39.106.165.196:1080|cn-foreign|1.1s
-  - 022|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
-  - 023|s5|CN|222.211.216.201:7890|cn|1.2s
-  - 026|s5|CN|116.172.234.154:1181|foreign|1.4s
-  - 030|s5|CN|111.206.4.163:18888|cn|1.8s
-  - 034|s5|CN|58.144.196.192:39105|cn-foreign|2.6s
-  - 035|s5|CN|120.24.22.233:1080|cn|2.9s
-  - 036|s5|CN|134.175.238.113:1080|cn-foreign|3.3s
+  - 020|s5|CN|39.106.165.196:1080|cn-foreign|1.0s
+  - 021|s5|CN|39.106.170.168:1080|cn-foreign|1.0s
+  - 024|s5|CN|113.249.111.67:1080|cn-foreign|1.1s
+  - 027|s5|CN|111.206.4.163:18888|cn-foreign|1.2s
+  - 028|s5|CN|175.155.178.210:1080|foreign|2.3s
 - name: SOCKS5-Slow
   type: select
   proxies:
-  - DIRECT
+  - 036|s5|CN|180.165.20.217:1081|foreign|4.3s
+  - 038|s5|CN|39.106.201.108:7890|cn|4.6s
 rules:
 - DOMAIN-SUFFIX,google.com,AUTO-Foreign
 - DOMAIN-SUFFIX,gstatic.com,AUTO-Foreign

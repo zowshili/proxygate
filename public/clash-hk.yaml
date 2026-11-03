@@ -5,79 +5,64 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 proxies:
-- name: 001|https|HK|16.163.88.228:80|cn|383ms
+- name: 001|https|HK|16.163.88.228:80|cn|361ms
   type: http
   server: 16.163.88.228
   port: 80
   udp: false
-- name: 002|https|HK|203.19.38.114:1080|cn|574ms
-  type: http
-  server: 203.19.38.114
-  port: 1080
-  udp: false
-- name: 003|https|HK|39.109.113.97:4090|cn|655ms
+- name: 002|https|HK|39.109.113.97:4090|cn|402ms
   type: http
   server: 39.109.113.97
   port: 4090
   udp: false
-- name: 004|https|HK|43.161.254.16:3128|cn|780ms
+- name: 003|https|中国|203.19.38.114:1080|cn|439ms
   type: http
-  server: 43.161.254.16
-  port: 3128
+  server: 203.19.38.114
+  port: 1080
   udp: false
-- name: 005|s5|HK|183.87.145.150:2080|foreign|789ms
-  type: socks5
-  server: 183.87.145.150
-  port: 2080
-  udp: false
-  skip-cert-verify: true
-- name: 006|s5|HK|123.58.219.171:10808|cn-foreign|794ms
+- name: 004|s5|HK|123.58.219.171:10808|cn-foreign|702ms
   type: socks5
   server: 123.58.219.171
   port: 10808
   udp: false
   skip-cert-verify: true
-- name: 007|https|HK|34.96.238.40:8080|cn|803ms
+- name: 005|https|HK|47.243.92.199:3128|cn|919ms
   type: http
-  server: 34.96.238.40
-  port: 8080
+  server: 47.243.92.199
+  port: 3128
   udp: false
-- name: 008|s5|HK|101.36.112.205:1081|cn|848ms
+- name: 006|https|HK|101.36.112.205:1081|cn|1.2s
+  type: http
+  server: 101.36.112.205
+  port: 1081
+  udp: false
+- name: 007|s5|HK|45.194.33.12:30002|cn-foreign|1.3s
+  type: socks5
+  server: 45.194.33.12
+  port: 30002
+  udp: false
+  skip-cert-verify: true
+- name: 008|s5|HK|45.194.33.12:30001|cn-foreign|1.5s
+  type: socks5
+  server: 45.194.33.12
+  port: 30001
+  udp: false
+  skip-cert-verify: true
+- name: 009|s5|HK|101.36.112.205:1081|cn-foreign|1.6s
   type: socks5
   server: 101.36.112.205
   port: 1081
   udp: false
   skip-cert-verify: true
-- name: 009|s5|HK|112.121.173.84:1080|cn-foreign|885ms
+- name: 010|https|HK|43.161.254.16:3128|cn|2.2s
+  type: http
+  server: 43.161.254.16
+  port: 3128
+  udp: false
+- name: 011|s5|HK|112.121.173.84:1080|foreign|4.9s
   type: socks5
   server: 112.121.173.84
   port: 1080
-  udp: false
-  skip-cert-verify: true
-- name: 010|https|HK|45.15.10.174:3128|cn|1.4s
-  type: http
-  server: 45.15.10.174
-  port: 3128
-  udp: false
-- name: 011|https|HK|103.43.191.71:8888|cn|2.2s
-  type: http
-  server: 103.43.191.71
-  port: 8888
-  udp: false
-- name: 012|https|HK|8.210.17.35:1080|cn|2.4s
-  type: http
-  server: 8.210.17.35
-  port: 1080
-  udp: false
-- name: 013|https|HK|47.239.140.6:443|cn|2.4s
-  type: http
-  server: 47.239.140.6
-  port: 443
-  udp: false
-- name: 014|s5|HK|47.239.140.6:443|cn|4.5s
-  type: socks5
-  server: 47.239.140.6
-  port: 443
   udp: false
   skip-cert-verify: true
 proxy-groups:
@@ -95,28 +80,27 @@ proxy-groups:
   interval: 300
   tolerance: 100
   proxies:
-  - 005|s5|HK|183.87.145.150:2080|foreign|789ms
-  - 006|s5|HK|123.58.219.171:10808|cn-foreign|794ms
-  - 009|s5|HK|112.121.173.84:1080|cn-foreign|885ms
+  - 004|s5|HK|123.58.219.171:10808|cn-foreign|702ms
+  - 007|s5|HK|45.194.33.12:30002|cn-foreign|1.3s
+  - 008|s5|HK|45.194.33.12:30001|cn-foreign|1.5s
+  - 009|s5|HK|101.36.112.205:1081|cn-foreign|1.6s
+  - 011|s5|HK|112.121.173.84:1080|foreign|4.9s
 - name: AUTO-CN
   type: url-test
   url: http://www.baidu.com
   interval: 300
   tolerance: 100
   proxies:
-  - 001|https|HK|16.163.88.228:80|cn|383ms
-  - 002|https|HK|203.19.38.114:1080|cn|574ms
-  - 003|https|HK|39.109.113.97:4090|cn|655ms
-  - 004|https|HK|43.161.254.16:3128|cn|780ms
-  - 006|s5|HK|123.58.219.171:10808|cn-foreign|794ms
-  - 007|https|HK|34.96.238.40:8080|cn|803ms
-  - 008|s5|HK|101.36.112.205:1081|cn|848ms
-  - 009|s5|HK|112.121.173.84:1080|cn-foreign|885ms
-  - 010|https|HK|45.15.10.174:3128|cn|1.4s
-  - 011|https|HK|103.43.191.71:8888|cn|2.2s
-  - 012|https|HK|8.210.17.35:1080|cn|2.4s
-  - 013|https|HK|47.239.140.6:443|cn|2.4s
-  - 014|s5|HK|47.239.140.6:443|cn|4.5s
+  - 001|https|HK|16.163.88.228:80|cn|361ms
+  - 002|https|HK|39.109.113.97:4090|cn|402ms
+  - 003|https|中国|203.19.38.114:1080|cn|439ms
+  - 004|s5|HK|123.58.219.171:10808|cn-foreign|702ms
+  - 005|https|HK|47.243.92.199:3128|cn|919ms
+  - 006|https|HK|101.36.112.205:1081|cn|1.2s
+  - 007|s5|HK|45.194.33.12:30002|cn-foreign|1.3s
+  - 008|s5|HK|45.194.33.12:30001|cn-foreign|1.5s
+  - 009|s5|HK|101.36.112.205:1081|cn-foreign|1.6s
+  - 010|https|HK|43.161.254.16:3128|cn|2.2s
 - name: HTTPS-All
   type: select
   proxies:
@@ -126,18 +110,15 @@ proxy-groups:
 - name: HTTPS-Fast
   type: select
   proxies:
-  - 001|https|HK|16.163.88.228:80|cn|383ms
-  - 002|https|HK|203.19.38.114:1080|cn|574ms
-  - 003|https|HK|39.109.113.97:4090|cn|655ms
-  - 004|https|HK|43.161.254.16:3128|cn|780ms
-  - 007|https|HK|34.96.238.40:8080|cn|803ms
+  - 001|https|HK|16.163.88.228:80|cn|361ms
+  - 002|https|HK|39.109.113.97:4090|cn|402ms
+  - 003|https|中国|203.19.38.114:1080|cn|439ms
+  - 005|https|HK|47.243.92.199:3128|cn|919ms
 - name: HTTPS-Medium
   type: select
   proxies:
-  - 010|https|HK|45.15.10.174:3128|cn|1.4s
-  - 011|https|HK|103.43.191.71:8888|cn|2.2s
-  - 012|https|HK|8.210.17.35:1080|cn|2.4s
-  - 013|https|HK|47.239.140.6:443|cn|2.4s
+  - 006|https|HK|101.36.112.205:1081|cn|1.2s
+  - 010|https|HK|43.161.254.16:3128|cn|2.2s
 - name: HTTPS-Slow
   type: select
   proxies:
@@ -151,18 +132,17 @@ proxy-groups:
 - name: SOCKS5-Fast
   type: select
   proxies:
-  - 005|s5|HK|183.87.145.150:2080|foreign|789ms
-  - 006|s5|HK|123.58.219.171:10808|cn-foreign|794ms
-  - 008|s5|HK|101.36.112.205:1081|cn|848ms
-  - 009|s5|HK|112.121.173.84:1080|cn-foreign|885ms
+  - 004|s5|HK|123.58.219.171:10808|cn-foreign|702ms
 - name: SOCKS5-Medium
   type: select
   proxies:
-  - DIRECT
+  - 007|s5|HK|45.194.33.12:30002|cn-foreign|1.3s
+  - 008|s5|HK|45.194.33.12:30001|cn-foreign|1.5s
+  - 009|s5|HK|101.36.112.205:1081|cn-foreign|1.6s
 - name: SOCKS5-Slow
   type: select
   proxies:
-  - 014|s5|HK|47.239.140.6:443|cn|4.5s
+  - 011|s5|HK|112.121.173.84:1080|foreign|4.9s
 rules:
 - DOMAIN-SUFFIX,google.com,AUTO-Foreign
 - DOMAIN-SUFFIX,gstatic.com,AUTO-Foreign
