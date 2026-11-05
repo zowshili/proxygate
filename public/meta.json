@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-11-05T04:19:44Z",
-  "generated_at_cst": "2026-11-05 12:19:44",
+  "generated_at": "2026-11-05T12:39:09Z",
+  "generated_at_cst": "2026-11-05 20:39:09",
   "scope": "full",
   "txt_format": "hostport",
   "counts": {
-    "all": 2014,
-    "cn": 40,
-    "hk": 17,
-    "socks5": 1126,
-    "https": 888
+    "all": 989,
+    "cn": 27,
+    "hk": 21,
+    "socks5": 669,
+    "https": 320
   },
   "files": {
-    "proxies.txt": 2014,
-    "proxies-socks5.txt": 1126,
-    "proxies-https.txt": 888,
-    "clash.yaml": 2014,
-    "proxies-cn.txt": 40,
-    "clash-cn.yaml": 40,
-    "proxies-hk.txt": 17,
-    "clash-hk.yaml": 17
+    "proxies.txt": 989,
+    "proxies-socks5.txt": 669,
+    "proxies-https.txt": 320,
+    "clash.yaml": 989,
+    "proxies-cn.txt": 27,
+    "clash-cn.yaml": 27,
+    "proxies-hk.txt": 21,
+    "clash-hk.yaml": 21
   },
   "regions": [
     "cn",
@@ -26,38 +26,36 @@
   ],
   "max_alive_latency_ms": 5000,
   "stats": {
-    "total": 15158,
-    "alive": 2014,
-    "alive_foreign_reachable": 974,
-    "alive_cn_reachable": 1569,
+    "total": 13661,
+    "alive": 989,
+    "alive_foreign_reachable": 602,
+    "alive_cn_reachable": 775,
     "by_protocol": {
-      "https": 888,
-      "socks5": 1126
+      "https": 320,
+      "socks5": 669
     },
     "by_region": {
-      "unknown": 17,
-      "cn": 40,
-      "hk": 17,
-      "other": 1940
+      "cn": 27,
+      "hk": 21,
+      "other": 941
     },
     "by_source": {
-      "geonode-cn": 6,
+      "geonode-cn": 4,
       "geonode-hk": 4,
-      "hideip-socks5": 294,
+      "hideip-socks5": 140,
       "ip3366": 5,
-      "ip89": 2,
-      "monosans-socks5": 349,
-      "openproxylist-https": 24,
-      "proxifly-cn": 7,
-      "proxifly-hk": 2,
-      "proxifly-socks5": 97,
-      "thespeedx-http": 848,
-      "thespeedx-socks5": 374,
-      "zdaye": 2
+      "ip89": 5,
+      "monosans-socks5": 232,
+      "openproxylist-https": 10,
+      "proxifly-cn": 6,
+      "proxifly-hk": 5,
+      "proxifly-socks5": 36,
+      "thespeedx-http": 294,
+      "thespeedx-socks5": 248
     },
-    "geo_cached": 1200,
-    "last_fetch_at": 1793852176,
-    "last_check_at": 1793852329,
-    "version": 104
+    "geo_cached": 546,
+    "last_fetch_at": 1793882191,
+    "last_check_at": 1793882326,
+    "version": 89
   }
 }
